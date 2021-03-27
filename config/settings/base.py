@@ -42,9 +42,7 @@ LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
-DATABASES = {
-    "default": env.db("DATABASE_URL", default="postgres:///rentalsystem")
-}
+DATABASES = {"default": env.db("DATABASE_URL", default="postgres:///rentalsystem")}
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
 # URLS
@@ -97,6 +95,21 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=2),
+    "AUTH_HEADER_TYPES": ("Bearer",),
+}
+
+DJOSER = {
+    "TOKEN_MODEL": None,
+    "PASSWORD_RESET_CONFIRM_URL": "password-reset/{uid}/{token}",
+    "ACTIVATION_URL": "activate/{uid}/{token}",
+    "LOGOUT_ON_PASSWORD_CHANGE": True,
+    "SERIALIZERS": {
+        "user": "rentalsystem.users.serializers.UserSerializer",
+    },
+}
+
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
 AUTH_USER_MODEL = "users.User"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
@@ -276,28 +289,13 @@ CELERY_TASK_SOFT_TIME_LIMIT = 60
 # http://docs.celeryproject.org/en/latest/userguide/configuration.html#beat-scheduler
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(hours=2),
-    'AUTH_HEADER_TYPES': ('Bearer',),
-}
-
-DJOSER = {
-    'TOKEN_MODEL': None,
-    'PASSWORD_RESET_CONFIRM_URL': 'password-reset/{uid}/{token}',
-    'ACTIVATION_URL': 'activate/{uid}/{token}',
-    'LOGOUT_ON_PASSWORD_CHANGE': True,
-    'SERIALIZERS': {
-        'user': 'rentalsystem.users.serializers.CustomUserSerializer',
-    }
-}
 
 # django-rest-framework
 # -------------------------------------------------------------------------------
 # django-rest-framework - https://www.django-rest-framework.org/api-guide/settings/
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework.authentication.SessionAuthentication",
-        "rest_framework.authentication.TokenAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }

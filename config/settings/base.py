@@ -79,8 +79,8 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "rentalsystem.accounts.apps.UsersConfig",
     "rentalsystem.properties.apps.PropertiesConfig",
+    "rentalsystem.subscription.apps.SubscriptionConfig",
     "rentalsystem.common.apps.CommonConfig",
-    # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS

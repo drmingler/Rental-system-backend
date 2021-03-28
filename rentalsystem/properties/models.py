@@ -9,8 +9,8 @@ from django.db.models import (
     DecimalField,
     OneToOneField,
     FileField,
+    IntegerField,
 )
-from django.forms import IntegerField
 
 from rentalsystem.accounts.models import User
 from rentalsystem.common.models import AbstractBaseModel
@@ -40,15 +40,15 @@ class Property(AbstractBaseModel):
     user = ForeignKey(User, related_name="properties", on_delete=CASCADE)
     propertyName = CharField(max_length=250, blank=True)
     propertyType = CharField(max_length=20, choices=PROPERTY_TYPE, blank=True)
-    numberOfBedrooms = IntegerField(max_value=20)
-    numberOfBathrooms = IntegerField(max_value=20)
-    unit = IntegerField(max_value=20)
-    size = DecimalField(default=0.00)
+    numberOfBedrooms = IntegerField(default=0)
+    numberOfBathrooms = IntegerField(default=0)
+    unit = IntegerField(blank=True)
+    size = DecimalField(default=0.00, max_digits=6, decimal_places=2)
     listingDescription = TextField(blank=True)
     availableFrom = DateField(max_length=20, blank=True)
-    monthlyRent = DecimalField(default=0.00)
-    securityDeposit = DecimalField(default=0.00)
-    isOwnerShipVerified = BooleanField(default=False, max_length=20)
+    monthlyRent = DecimalField(default=0.00, max_digits=10, decimal_places=2)
+    securityDeposit = DecimalField(default=0.00, max_digits=10, decimal_places=2)
+    isOwnerShipVerified = BooleanField(default=False)
 
 
 class PropertyAddress(AbstractBaseModel):
@@ -59,8 +59,8 @@ class PropertyAddress(AbstractBaseModel):
     )
     address = CharField(default=None, max_length=255)
     stateName = CharField(max_length=50, blank=True)
-    latitude = DecimalField(default=None, blank=True)
-    longitude = DecimalField(default=None, blank=True)
+    latitude = DecimalField(default=None, blank=True, max_digits=6, decimal_places=2)
+    longitude = DecimalField(default=None, blank=True, max_digits=6, decimal_places=2)
 
 
 class PropertyRules(AbstractBaseModel):
@@ -97,7 +97,7 @@ class PropertyAmenities(AbstractBaseModel):
     firePlace = BooleanField(default=False)
     airCondition = BooleanField(default=False)
     dishWasher = BooleanField(default=False)
-    storage = BooleanField(default=False)
+    itemStorage = BooleanField(default=False)
     wheelchair = BooleanField(default=False)
     balcony = BooleanField(default=False)
     hardFloor = BooleanField(default=False)
@@ -116,7 +116,7 @@ class AvailableLocations(AbstractBaseModel):
     that falls in the range of the longitude and latitude.
     """
 
-    latitude = DecimalField(default=None, blank=True)
-    longitude = DecimalField(default=None, blank=True)
+    latitude = DecimalField(default=None, blank=True, max_digits=6, decimal_places=2)
+    longitude = DecimalField(default=None, blank=True, max_digits=6, decimal_places=2)
     stateName = CharField(blank=True, max_length=50)
     nationality = CharField(blank=True, max_length=40)

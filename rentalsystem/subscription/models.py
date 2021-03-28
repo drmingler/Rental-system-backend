@@ -4,7 +4,6 @@ from typing import Union
 
 from django.db.models import (
     CharField,
-    ForeignKey,
     OneToOneField,
     DecimalField,
     DateTimeField,
@@ -34,8 +33,11 @@ class Subscription(AbstractBaseModel):
     subscribedOn = DateTimeField(blank=True)
 
     def expires_on(self) -> Union[datetime, None]:
-        if self.subscribedOn:
+        if self.subscribedOn and self.planType == self.MONTHLY:
             return self.subscribedOn + timedelta(30)
+
+        if self.subscribedOn and self.planType == self.YEARLY:
+            return self.subscribedOn + timedelta(365)
 
     def is_subscription_active(self) -> bool:
         expiry_date = self.expires_on()

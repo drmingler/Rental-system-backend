@@ -77,3 +77,32 @@ class OwnershipDocument(AbstractBaseModel):
 
     property = ForeignKey(Property, related_name="propertyDocuments", on_delete=CASCADE)
     document = FileField(blank=True, storage=MediaRootS3Boto3Storage())
+
+
+class PropertyAmenities(AbstractBaseModel):
+    """ Property Amenities Model"""
+
+    property = OneToOneField(
+        Property, related_name="propertyAmenities", on_delete=CASCADE
+    )
+    pool = BooleanField(default=False)
+    garden = BooleanField(default=False)
+    elevator = BooleanField(default=False)
+    doorman = BooleanField(default=False)
+    dryer = BooleanField(default=False)
+    deck = BooleanField(default=False)
+    washer = BooleanField(default=False)
+    gym = BooleanField(default=False)
+    parking = BooleanField(default=False)
+    firePlace = BooleanField(default=False)
+    airCondition = BooleanField(default=False)
+    dishWasher = BooleanField(default=False)
+    storage = BooleanField(default=False)
+    wheelchair = BooleanField(default=False)
+    balcony = BooleanField(default=False)
+    hardFloor = BooleanField(default=False)
+    furnished = BooleanField(default=False)
+    view = BooleanField(default=False)
+    highRise = BooleanField(default=False)
+    studentFriendly = BooleanField(default=False)
+    utilities = BooleanField(default=False)

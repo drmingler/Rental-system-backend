@@ -8,11 +8,13 @@ from django.db.models import (
     DateField,
     DecimalField,
     OneToOneField,
+    FileField,
 )
 from django.forms import IntegerField
 
 from rentalsystem.accounts.models import User
 from rentalsystem.common.models import AbstractBaseModel
+from rentalsystem.utils.storages import MediaRootS3Boto3Storage
 
 
 class Property(AbstractBaseModel):
@@ -31,6 +33,10 @@ class Property(AbstractBaseModel):
         (DUPLEX, "duplex"),
         (ROOM, "room"),
     )
+
+    class Meta:
+        verbose_name_plural = "Properties"
+
     user = ForeignKey(User, related_name="properties", on_delete=CASCADE)
     propertyName = CharField(max_length=250, blank=True)
     propertyType = CharField(max_length=20, choices=PROPERTY_TYPE, blank=True)
@@ -64,3 +70,10 @@ class PropertyRules(AbstractBaseModel):
     smoking = BooleanField(default=False)
     pet = BooleanField(default=False)
     musicalInstruments = BooleanField(default=False)
+
+
+class OwnershipDocument(AbstractBaseModel):
+    """ Property Document Model"""
+
+    property = ForeignKey(Property, related_name="propertyDocuments", on_delete=CASCADE)
+    document = FileField(blank=True, storage=MediaRootS3Boto3Storage())

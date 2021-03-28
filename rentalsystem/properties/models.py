@@ -38,17 +38,23 @@ class Property(AbstractBaseModel):
         verbose_name_plural = "Properties"
 
     user = ForeignKey(User, related_name="properties", on_delete=CASCADE)
-    propertyName = CharField(max_length=250, blank=True)
-    propertyType = CharField(max_length=20, choices=PROPERTY_TYPE, blank=True)
-    numberOfBedrooms = IntegerField(default=0)
-    numberOfBathrooms = IntegerField(default=0)
-    unit = IntegerField(blank=True)
+    propertyName = CharField("Property name", max_length=250, blank=True)
+    numberOfBedrooms = IntegerField("Number of bedrooms", default=0)
+    numberOfBathrooms = IntegerField("Number of bathrooms", default=0)
+    listingDescription = TextField("Listing description", blank=True)
+    availableFrom = DateField("Available from", max_length=20, blank=True)
+    isOwnerShipVerified = BooleanField("Is ownership verified", default=False)
+    unit = IntegerField(default=0)
     size = DecimalField(default=0.00, max_digits=6, decimal_places=2)
-    listingDescription = TextField(blank=True)
-    availableFrom = DateField(max_length=20, blank=True)
-    monthlyRent = DecimalField(default=0.00, max_digits=10, decimal_places=2)
-    securityDeposit = DecimalField(default=0.00, max_digits=10, decimal_places=2)
-    isOwnerShipVerified = BooleanField(default=False)
+    propertyType = CharField(
+        "Property type", max_length=20, choices=PROPERTY_TYPE, blank=True
+    )
+    monthlyRent = DecimalField(
+        "Monthly rent", default=0.00, max_digits=10, decimal_places=2
+    )
+    securityDeposit = DecimalField(
+        "Security deposit", default=0.00, max_digits=10, decimal_places=2
+    )
 
 
 class PropertyAddress(AbstractBaseModel):
@@ -58,7 +64,7 @@ class PropertyAddress(AbstractBaseModel):
         Property, related_name="propertyAddress", on_delete=CASCADE
     )
     address = CharField(default=None, max_length=255)
-    stateName = CharField(max_length=50, blank=True)
+    stateName = CharField("State name", max_length=50, blank=True)
     latitude = DecimalField(default=None, blank=True, max_digits=6, decimal_places=2)
     longitude = DecimalField(default=None, blank=True, max_digits=6, decimal_places=2)
 
@@ -94,17 +100,17 @@ class PropertyAmenities(AbstractBaseModel):
     washer = BooleanField(default=False)
     gym = BooleanField(default=False)
     parking = BooleanField(default=False)
-    firePlace = BooleanField(default=False)
-    airCondition = BooleanField(default=False)
-    dishWasher = BooleanField(default=False)
-    itemStorage = BooleanField(default=False)
-    wheelchair = BooleanField(default=False)
+    firePlace = BooleanField("Fire place", default=False)
+    airCondition = BooleanField("Air condition", default=False)
+    dishWasher = BooleanField("Dish washer", default=False)
+    itemStorage = BooleanField("Item storage", default=False)
+    wheelchair = BooleanField("Wheel chair", default=False)
     balcony = BooleanField(default=False)
-    hardFloor = BooleanField(default=False)
+    hardFloor = BooleanField("Hard floor", default=False)
     furnished = BooleanField(default=False)
     view = BooleanField(default=False)
-    highRise = BooleanField(default=False)
-    studentFriendly = BooleanField(default=False)
+    highRise = BooleanField("High rise", default=False)
+    studentFriendly = BooleanField("Student friendly", default=False)
     utilities = BooleanField(default=False)
 
 
@@ -118,5 +124,5 @@ class AvailableLocations(AbstractBaseModel):
 
     latitude = DecimalField(default=None, blank=True, max_digits=6, decimal_places=2)
     longitude = DecimalField(default=None, blank=True, max_digits=6, decimal_places=2)
-    stateName = CharField(blank=True, max_length=50)
+    stateName = CharField("State name", blank=True, max_length=50)
     nationality = CharField(blank=True, max_length=40)

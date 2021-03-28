@@ -106,3 +106,17 @@ class PropertyAmenities(AbstractBaseModel):
     highRise = BooleanField(default=False)
     studentFriendly = BooleanField(default=False)
     utilities = BooleanField(default=False)
+
+
+class AvailableLocations(AbstractBaseModel):
+    """
+    This model is not connected to any other model.
+    It is used in by the map to get the various states and countries the application currently serves and
+    the longitude and latitude of the location, in order to show properties in the database
+    that falls in the range of the longitude and latitude.
+    """
+
+    latitude = DecimalField(default=None, blank=True)
+    longitude = DecimalField(default=None, blank=True)
+    stateName = CharField(blank=True, max_length=50)
+    nationality = CharField(blank=True, max_length=40)

@@ -1,4 +1,3 @@
-# Create your models here.
 from django.db.models import (
     ForeignKey,
     CASCADE,
@@ -60,6 +59,9 @@ class Property(AbstractBaseModel):
 class PropertyAddress(AbstractBaseModel):
     """ Property's Address Model"""
 
+    class Meta:
+        verbose_name_plural = "Property Addresses"
+
     property = OneToOneField(
         Property, related_name="propertyAddress", on_delete=CASCADE
     )
@@ -71,6 +73,9 @@ class PropertyAddress(AbstractBaseModel):
 
 class PropertyRules(AbstractBaseModel):
     """ Property's Rules Model"""
+
+    class Meta:
+        verbose_name_plural = "Property Rules"
 
     property = OneToOneField(Property, related_name="propertyRule", on_delete=CASCADE)
     smoking = BooleanField(default=False)
@@ -87,6 +92,9 @@ class OwnershipDocument(AbstractBaseModel):
 
 class PropertyAmenities(AbstractBaseModel):
     """ Property Amenities Model"""
+
+    class Meta:
+        verbose_name_plural = "Property Amenities"
 
     property = OneToOneField(
         Property, related_name="propertyAmenities", on_delete=CASCADE
@@ -114,7 +122,7 @@ class PropertyAmenities(AbstractBaseModel):
     utilities = BooleanField(default=False)
 
 
-class AvailableLocations(AbstractBaseModel):
+class AvailableLocation(AbstractBaseModel):
     """
     This model is not connected to any other model.
     It is used in by the map to get the various states and countries the application currently serves and

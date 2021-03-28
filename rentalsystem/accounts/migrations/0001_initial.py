@@ -111,7 +111,7 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={
-                "verbose_name_plural": "users",
+                "verbose_name_plural": "accounts",
                 "verbose_name": "user",
                 "abstract": False,
             },

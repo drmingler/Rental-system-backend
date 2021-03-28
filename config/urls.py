@@ -8,7 +8,7 @@ urlpatterns = [
     # Django Admin, use {% url 'admin:index' %}
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
-    # path("users/", include("rentalsystem.users.urls", namespace="users")),
+    # path("accounts/", include("rentalsystem.accounts.urls", namespace="accounts")),
     path("auth/", include("djoser.urls")),
     path("auth/", include("djoser.urls.jwt")),
     # Your stuff: custom urls includes go here

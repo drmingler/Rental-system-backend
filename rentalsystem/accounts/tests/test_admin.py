@@ -1,7 +1,7 @@
 import pytest
 from django.urls import reverse
 
-from rentalsystem.users.models import User
+from rentalsystem.accounts.models import User
 
 pytestmark = pytest.mark.django_db
 

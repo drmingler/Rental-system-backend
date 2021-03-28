@@ -7,10 +7,10 @@ from django.contrib.sessions.middleware import SessionMiddleware
 from django.test import RequestFactory
 from django.urls import reverse
 
-from rentalsystem.users.forms import UserChangeForm
-from rentalsystem.users.models import User
-from rentalsystem.users.tests.factories import UserFactory
-from rentalsystem.users.views import (
+from rentalsystem.accounts.forms import UserChangeForm
+from rentalsystem.accounts.models import User
+from rentalsystem.accounts.tests.factories import UserFactory
+from rentalsystem.accounts.views import (
     UserRedirectView,
     UserUpdateView,
     user_detail_view,

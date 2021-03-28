@@ -1,7 +1,7 @@
 import pytest
 
-from rentalsystem.users.models import User
-from rentalsystem.users.tests.factories import UserFactory
+from rentalsystem.accounts.models import User
+from rentalsystem.accounts.tests.factories import UserFactory
 
 
 @pytest.fixture(autouse=True)

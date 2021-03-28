@@ -1,9 +1,11 @@
 from django.contrib.auth.models import AbstractUser
 from django.db.models import CharField, DateTimeField, EmailField, ImageField
+
+from rentalsystem.common.models import AbstractBaseModel
 from rentalsystem.utils.storages import MediaRootS3Boto3Storage
 
 
-class User(AbstractUser):
+class User(AbstractUser, AbstractBaseModel):
     """Default user for RentalSystemBackend."""
 
     FEMALE = "Female"

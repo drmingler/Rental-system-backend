@@ -77,7 +77,7 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    "rentalsystem.users.apps.UsersConfig",
+    "rentalsystem.accounts.apps.UsersConfig",
     "rentalsystem.properties.apps.PropertiesConfig",
     "rentalsystem.common.apps.CommonConfig",
     # Your stuff: custom apps go here
@@ -108,14 +108,14 @@ DJOSER = {
     "ACTIVATION_URL": "activate/{uid}/{token}",
     "LOGOUT_ON_PASSWORD_CHANGE": True,
     "SERIALIZERS": {
-        "user": "rentalsystem.users.serializers.UserSerializer",
+        "user": "rentalsystem.accounts.serializers.UserSerializer",
     },
 }
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
-AUTH_USER_MODEL = "users.User"
+AUTH_USER_MODEL = "accounts.User"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
-LOGIN_REDIRECT_URL = "users:redirect"
+LOGIN_REDIRECT_URL = "accounts:redirect"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-url
 LOGIN_URL = "account_login"
 

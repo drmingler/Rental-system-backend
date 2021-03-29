@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework.fields import CharField, DateField
 
 from rentalsystem.subscription.models import Subscription
 
@@ -16,3 +17,10 @@ class TransactionHistorySerializer(serializers.ModelSerializer):
             Subscription.SUBSCRIBED_ON,
             Subscription.EXPIRES_ON,
         ]
+
+
+class SubscriptionSerializer(serializers.Serializer):
+    cardHolderName = CharField(min_length=4, max_length=40, required=True)
+    cardNumber = CharField(min_length=16, max_length=40, required=True)
+    expiry = DateField(required=True)
+    cvc = CharField(max_length=4, required=True)

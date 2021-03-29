@@ -92,7 +92,7 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",
 ]
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(hours=2),
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=24),
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
@@ -295,7 +295,7 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_PERMISSION_CLASSES": (
         "rest_framework.permissions.IsAuthenticated",
-        "rentalsystem.common.permission.IsOwner",
+        # "rentalsystem.common.permission.IsOwner",
     ),
 }
 

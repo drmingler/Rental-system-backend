@@ -10,4 +10,18 @@ class IsOwner(BasePermission):
         return request.user and request.user.is_authenticated
 
     def has_object_permission(self, request, view, obj) -> bool:
+        print(obj)
+        return request.user == obj.user
+
+
+class IsOwnProfile(BasePermission):
+    """
+    Custom permission to only allow owners of an object to edit it.
+    """
+
+    def has_permission(self, request, view) -> bool:
+        return request.user and request.user.is_authenticated
+
+    def has_object_permission(self, request, view, obj) -> bool:
+        print(obj)
         return request.user.id == obj.id

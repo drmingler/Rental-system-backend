@@ -19,13 +19,26 @@ from rentalsystem.utils.storages import MediaRootS3Boto3Storage
 class Property(AbstractBaseModel):
     """ Property Model """
 
+    USER = "user"
+    PROPERTY_NAME = "propertyName"
+    NUMBER_OF_BEDROOMS = "numberOfBedrooms"
+    NUMBER_OF_BATHROOMS = "numberOfBathrooms"
+    LISTING_DESCRIPTION = "listingDescription"
+    AVAILABLE_FROM = "availableFrom"
+    IS_OWNERSHIP_VERIFIED = "isOwnerShipVerified"
+    UNIT = "unit"
+    SIZE = "size"
+    PROPERTY_TYPE = "propertyType"
+    MONTHLY_RENT = "monthlyRent"
+    SECURITY_DEPOSIT = "securityDeposit"
+
     APARTMENT = "apartment"
     HOUSE = "house"
     CONDO = "condo"
     DUPLEX = "duplex"
     ROOM = "room"
 
-    PROPERTY_TYPE = (
+    PROPERTY_TYPES = (
         (APARTMENT, "apartment"),
         (HOUSE, "house"),
         (CONDO, "condo"),
@@ -46,7 +59,7 @@ class Property(AbstractBaseModel):
     unit = IntegerField(default=0)
     size = DecimalField(default=0.00, max_digits=6, decimal_places=2)
     propertyType = CharField(
-        "Property type", max_length=20, choices=PROPERTY_TYPE, blank=True
+        "Property type", max_length=20, choices=PROPERTY_TYPES, blank=True
     )
     monthlyRent = DecimalField(
         "Monthly rent", default=0.00, max_digits=10, decimal_places=2
@@ -58,6 +71,12 @@ class Property(AbstractBaseModel):
 
 class PropertyAddress(AbstractBaseModel):
     """ Property's Address Model"""
+
+    PROPERTY = "property"
+    ADDRESS = "address"
+    STATE_NAME = "stateName"
+    LATITUDE = "latitude"
+    LONGITUDE = "longitude"
 
     class Meta:
         verbose_name_plural = "Property Addresses"
@@ -71,6 +90,13 @@ class PropertyAddress(AbstractBaseModel):
     longitude = DecimalField(default=None, blank=True, max_digits=6, decimal_places=2)
 
 
+class OwnershipDocument(AbstractBaseModel):
+    """ Property Document Model"""
+
+    property = ForeignKey(Property, related_name="propertyDocuments", on_delete=CASCADE)
+    document = FileField(blank=True, storage=MediaRootS3Boto3Storage())
+
+
 class PropertyRules(AbstractBaseModel):
     """ Property's Rules Model"""
 
@@ -81,13 +107,6 @@ class PropertyRules(AbstractBaseModel):
     smoking = BooleanField(default=False)
     pet = BooleanField(default=False)
     musicalInstruments = BooleanField(default=False)
-
-
-class OwnershipDocument(AbstractBaseModel):
-    """ Property Document Model"""
-
-    property = ForeignKey(Property, related_name="propertyDocuments", on_delete=CASCADE)
-    document = FileField(blank=True, storage=MediaRootS3Boto3Storage())
 
 
 class PropertyAmenities(AbstractBaseModel):
@@ -125,8 +144,8 @@ class PropertyAmenities(AbstractBaseModel):
 class AvailableLocation(AbstractBaseModel):
     """
     This model is not connected to any other model.
-    It is used in by the map to get the various states and countries the application currently serves and
-    the longitude and latitude of the location, in order to show properties in the database
+    It is used  by the map to get the various states and countries the application currently serves and
+    the longitude and latitude of the location, in order to fetch properties from the database
     that falls in the range of the longitude and latitude.
     """
 

@@ -1,4 +1,7 @@
-from django.urls import path
+from rest_framework.routers import SimpleRouter
+from rentalsystem.accounts.views import UserProfileViewSet
 
-app_name = "accounts"
-urlpatterns = []
+router = SimpleRouter()
+router.register("accounts", UserProfileViewSet)
+
+urlpatterns = router.urls

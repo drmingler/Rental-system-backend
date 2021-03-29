@@ -22,6 +22,7 @@ if settings.DEBUG:
 urlpatterns += [
     # API base url
     path("api/", include("rentalsystem.accounts.urls")),
+    path("api/", include("rentalsystem.subscription.urls")),
 ]
 
 if settings.DEBUG:

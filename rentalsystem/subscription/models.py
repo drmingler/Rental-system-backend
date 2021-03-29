@@ -17,18 +17,25 @@ from rentalsystem.common.models import AbstractBaseModel
 class Subscription(AbstractBaseModel):
     """ Property Listing Subscription  Model """
 
-    FREE = "Free"
-    MONTHLY = "Monthly"
-    YEARLY = "Yearly"
+    USER = "user"
+    PLAN_TYPE = "planType"
+    AMOUNT = "amount"
+    SUBSCRIBED_ON = "subscribedOn"
+    EXPIRES_ON = "expiresOn"
+    IS_SUBSCRIPTION_ACTIVE = "isSubscriptionActive"
 
-    PLAN_TYPE = (
-        (FREE, "Free"),
-        (MONTHLY, "Monthly"),
-        (YEARLY, "Yearly"),
+    FREE = "FREE"
+    MONTHLY = "MONTHLY"
+    YEARLY = "YEARLY"
+
+    PLAN_TYPES = (
+        (FREE, "FREE"),
+        (MONTHLY, "MONTHLY"),
+        (YEARLY, "YEARLY"),
     )
 
     user = OneToOneField(User, related_name="subscription", on_delete=CASCADE)
-    planType = CharField("Plan type", choices=PLAN_TYPE, default=FREE, max_length=20)
+    planType = CharField("Plan type", choices=PLAN_TYPES, default=FREE, max_length=20)
     amount = DecimalField(default=0.00, max_digits=10, decimal_places=2)
     subscribedOn = DateTimeField("Subscribed on", blank=True)
 

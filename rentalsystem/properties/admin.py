@@ -4,6 +4,9 @@ from rentalsystem.properties.models import (
     PropertyAddress,
     PropertyRules,
     OwnershipDocument,
+    PropertyAmenities,
+    AvailableLocation,
+    PropertyImage,
 )
 
 # Register your models here.
@@ -12,7 +15,7 @@ common_fields = ["created_at", "updated_at"]
 
 class PropertyAdmin(admin.ModelAdmin):
     list_display = [
-        "user",
+        "landlord",
         "propertyName",
         "propertyType",
         "numberOfBedrooms",
@@ -53,6 +56,13 @@ class OwnershipDocumentAdmin(admin.ModelAdmin):
     ] + common_fields
 
 
+class PropertyImageAdmin(admin.ModelAdmin):
+    list_display = [
+        "property",
+        "image",
+    ] + common_fields
+
+
 class PropertyAmenitiesAdmin(admin.ModelAdmin):
     list_display = [
         "property",
@@ -78,7 +88,7 @@ class PropertyAmenitiesAdmin(admin.ModelAdmin):
     ] + common_fields
 
 
-class AvailableLocationsAdmin(admin.ModelAdmin):
+class AvailableLocationAdmin(admin.ModelAdmin):
     list_display = [
         "latitude",
         "longitude",
@@ -91,3 +101,6 @@ admin.site.register(Property, PropertyAdmin)
 admin.site.register(PropertyAddress, PropertyAddressAdmin)
 admin.site.register(PropertyRules, PropertyRulesAdmin)
 admin.site.register(OwnershipDocument, OwnershipDocumentAdmin)
+admin.site.register(PropertyImage, PropertyImageAdmin)
+admin.site.register(PropertyAmenities, PropertyAmenitiesAdmin)
+admin.site.register(AvailableLocation, AvailableLocationAdmin)

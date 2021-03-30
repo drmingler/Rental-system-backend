@@ -10,6 +10,7 @@ from django.db.models import (
     FileField,
     IntegerField,
 )
+from django.db.models.fields.files import ImageField
 
 from rentalsystem.accounts.models import User
 from rentalsystem.common.models import AbstractBaseModel
@@ -19,7 +20,8 @@ from rentalsystem.utils.storages import MediaRootS3Boto3Storage
 class Property(AbstractBaseModel):
     """ Property Model """
 
-    USER = "user"
+    ID = "id"
+    LANDLORD = "landlord"
     PROPERTY_NAME = "propertyName"
     NUMBER_OF_BEDROOMS = "numberOfBedrooms"
     NUMBER_OF_BATHROOMS = "numberOfBathrooms"
@@ -49,7 +51,7 @@ class Property(AbstractBaseModel):
     class Meta:
         verbose_name_plural = "Properties"
 
-    user = ForeignKey(User, related_name="properties", on_delete=CASCADE)
+    landlord = ForeignKey(User, related_name="properties", on_delete=CASCADE)
     propertyName = CharField("Property name", max_length=250, blank=True)
     numberOfBedrooms = IntegerField("Number of bedrooms", default=0)
     numberOfBathrooms = IntegerField("Number of bathrooms", default=0)
@@ -90,10 +92,17 @@ class PropertyAddress(AbstractBaseModel):
     longitude = DecimalField(default=None, blank=True, max_digits=6, decimal_places=2)
 
 
+class PropertyImage(AbstractBaseModel):
+    """ Property Image Model"""
+
+    property = ForeignKey(Property, related_name="propertyImage", on_delete=CASCADE)
+    image = ImageField(blank=True, storage=MediaRootS3Boto3Storage())
+
+
 class OwnershipDocument(AbstractBaseModel):
     """ Property Document Model"""
 
-    property = ForeignKey(Property, related_name="propertyDocuments", on_delete=CASCADE)
+    property = ForeignKey(Property, related_name="propertyDocument", on_delete=CASCADE)
     document = FileField(blank=True, storage=MediaRootS3Boto3Storage())
 
 

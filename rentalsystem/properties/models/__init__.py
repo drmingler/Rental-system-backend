@@ -1,1 +1,2 @@
-from rentalsystem.properties.models.model1 import Property
+from .model1 import Property, PropertyAddress, PropertyImage, OwnershipDocument
+from .model2 import PropertyRules, PropertyAmenities, AvailableLocation

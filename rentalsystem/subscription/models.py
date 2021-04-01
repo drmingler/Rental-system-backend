@@ -37,7 +37,7 @@ class Subscription(AbstractBaseModel):
     user = OneToOneField(User, related_name="subscription", on_delete=CASCADE)
     planType = CharField("Plan type", choices=PLAN_TYPES, default=FREE, max_length=20)
     amount = DecimalField(default=0.00, max_digits=10, decimal_places=2)
-    subscribedOn = DateTimeField("Subscribed on", blank=True)
+    subscribedOn = DateTimeField("Subscribed on", blank=True, null=True)
 
     def expires_on(self) -> Union[datetime, None]:
         if self.subscribedOn and self.planType == self.MONTHLY:

@@ -1,8 +1,14 @@
+from rest_framework import viewsets, status
 from rest_framework.filters import SearchFilter
+from rest_framework.generics import get_object_or_404
 from rest_framework.mixins import ListModelMixin
+from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
-from rentalsystem.properties.models import Property
-from rentalsystem.properties.serializers import PropertySerializer
+from rentalsystem.properties.models import Property, AvailableLocation
+from rentalsystem.properties.serializers import (
+    PropertySerializer,
+    AvailableLocationSerializer,
+)
 
 
 ## get property
@@ -32,3 +38,13 @@ class SimplePropertySearchViewSet(ListModelMixin, GenericViewSet):
     serializer_class = PropertySerializer
     filter_backends = [SearchFilter]
     search_fields = ["landlord__id", "propertyAddress__stateName"]
+
+
+class CurrentLocationViewSet(viewsets.ViewSet, GenericViewSet):
+    def list(self, request):
+        location_name: str = self.request.query_params.get("location_name")
+        location_object = get_object_or_404(
+            AvailableLocation, stateName=location_name.capitalize()
+        )
+        serializer = AvailableLocationSerializer(location_object)
+        return Response(serializer.data)

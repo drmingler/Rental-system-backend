@@ -1,5 +1,10 @@
 from rest_framework import serializers
-from rentalsystem.properties.models import Property, PropertyAddress, PropertyImage
+from rentalsystem.properties.models import (
+    Property,
+    PropertyAddress,
+    PropertyImage,
+    AvailableLocation,
+)
 
 
 class PropertyAddressSerializer(serializers.ModelSerializer):
@@ -48,4 +53,15 @@ class PropertySerializer(serializers.ModelSerializer):
         ]
         read_only_fields = [
             Property.ID,
+        ]
+
+
+class AvailableLocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AvailableLocation
+        fields = [
+            AvailableLocation.STATE_NAME,
+            AvailableLocation.COUNTRY,
+            AvailableLocation.LONGITUDE,
+            AvailableLocation.LATITUDE,
         ]

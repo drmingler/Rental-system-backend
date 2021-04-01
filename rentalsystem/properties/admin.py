@@ -93,7 +93,7 @@ class AvailableLocationAdmin(admin.ModelAdmin):
         "latitude",
         "longitude",
         "stateName",
-        "nationality",
+        "country",
     ] + common_fields
 
 

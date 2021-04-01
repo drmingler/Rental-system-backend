@@ -61,7 +61,12 @@ class AvailableLocation(AbstractBaseModel):
     that falls in the range of the longitude and latitude.
     """
 
+    LATITUDE = "latitude"
+    LONGITUDE = "longitude"
+    STATE_NAME = "stateName"
+    COUNTRY = "country"
+
     latitude = DecimalField(default=None, blank=True, max_digits=6, decimal_places=2)
     longitude = DecimalField(default=None, blank=True, max_digits=6, decimal_places=2)
     stateName = CharField("State name", blank=True, max_length=50)
-    nationality = CharField(blank=True, max_length=40)
+    country = CharField(blank=True, max_length=40)

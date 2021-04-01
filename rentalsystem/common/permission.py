@@ -32,4 +32,5 @@ class IsLandlord(AbstractBasePermission):
     """
 
     def has_object_permission(self, request, view, obj) -> bool:
-        return request.user.userType == User.LANDLORD
+        user: User = request.user
+        return user.userType == User.LANDLORD and user == obj.landlord

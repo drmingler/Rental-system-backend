@@ -25,7 +25,9 @@ class PropertyImageSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class PropertySerializer(serializers.ModelSerializer):
+class PropertyBaseSerializer(serializers.ModelSerializer):
+    """Base serializer from property. Every property serializer inherits from this"""
+
     propertyAddress = PropertyAddressSerializer()
     propertyImage = PropertyImageSerializer(many=True)
 
@@ -54,6 +56,14 @@ class PropertySerializer(serializers.ModelSerializer):
         read_only_fields = [
             Property.ID,
         ]
+
+
+class ViewablePropertiesSerializer(PropertyBaseSerializer):
+    pass
+
+
+class EditablePropertySerializer(PropertyBaseSerializer):
+    pass
 
 
 class AvailableLocationSerializer(serializers.ModelSerializer):

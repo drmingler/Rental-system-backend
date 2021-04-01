@@ -1,21 +1,29 @@
 from rest_framework import viewsets, status
 from rest_framework.filters import SearchFilter
 from rest_framework.generics import get_object_or_404
-from rest_framework.mixins import ListModelMixin
+from rest_framework.mixins import (
+    ListModelMixin,
+    RetrieveModelMixin,
+    CreateModelMixin,
+    DestroyModelMixin,
+    UpdateModelMixin,
+)
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
+
+from rentalsystem.common.permission import IsLandlord
 from rentalsystem.properties.models import Property, AvailableLocation
 from rentalsystem.properties.serializers import (
-    PropertySerializer,
+    ViewablePropertiesSerializer,
     AvailableLocationSerializer,
+    EditablePropertySerializer,
 )
 
 
-## get property
-## create property
-## update property
-## delete property
-
+## get property everybody retrieve
+## create property landlord create
+## update property landlord update
+## delete property landlord delete
 
 ### using advance search
 ## search for  properties by address
@@ -33,9 +41,22 @@ from rentalsystem.properties.serializers import (
 ## get current state
 
 
+class EditPropertyDetailsViewSet(
+    CreateModelMixin, DestroyModelMixin, UpdateModelMixin, GenericViewSet
+):
+    permission_classes = [IsLandlord]
+    queryset = Property.objects.all()
+    serializer_class = EditablePropertySerializer
+
+
+class ViewPropertyDetailsViewSet(RetrieveModelMixin, GenericViewSet):
+    queryset = Property.objects.all()
+    serializer_class = EditablePropertySerializer
+
+
 class SimplePropertySearchViewSet(ListModelMixin, GenericViewSet):
     queryset = Property.objects.all()
-    serializer_class = PropertySerializer
+    serializer_class = ViewablePropertiesSerializer
     filter_backends = [SearchFilter]
     search_fields = ["landlord__id", "propertyAddress__stateName"]
 

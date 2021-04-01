@@ -1,5 +1,7 @@
 from rest_framework import serializers
-from typing import List
+from typing import List, Dict
+from drf_writable_nested.serializers import WritableNestedModelSerializer
+from rest_framework.request import Request
 
 from rentalsystem.properties.models import (
     Property,
@@ -9,47 +11,42 @@ from rentalsystem.properties.models import (
     PropertyAmenities,
     PropertyRules,
 )
+from rentalsystem.properties.service import PropertyService
 
 
 class PropertyAddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = PropertyAddress
-        fields = [
-            PropertyAddress.PROPERTY,
-            PropertyAddress.ADDRESS,
-            PropertyAddress.STATE_NAME,
-            PropertyAddress.LATITUDE,
-            PropertyAddress.LONGITUDE,
+        exclude = [
+            "property",
         ]
 
 
 class PropertyImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = PropertyImage
-        fields = "__all__"
-        read_only_fields = [
-            Property.ID,
+        exclude = [
+            "property",
         ]
 
 
 class PropertyRulesSerializer(serializers.ModelSerializer):
     class Meta:
         model = PropertyRules
-        fields = "__all__"
-        read_only_fields = [
-            Property.ID,
+        exclude = [
+            "property",
         ]
 
 
 class PropertyAmenitiesSerializer(serializers.ModelSerializer):
     class Meta:
         model = PropertyAmenities
-        fields = "__all__"
-        read_only_fields = [
-            Property.ID,
+        exclude = [
+            "property",
         ]
 
 
+# class PropertyBaseSerializer(WritableNestedModelSerializer):
 class PropertyBaseSerializer(serializers.ModelSerializer):
     """Base serializer for property. Every property serializer inherits from this"""
 
@@ -57,13 +54,10 @@ class PropertyBaseSerializer(serializers.ModelSerializer):
     propertyImage = PropertyImageSerializer(many=True)
 
     class Meta:
-        PROPERTY_ADDRESS = "propertyAddress"
-        PROPERTY_IMAGE = "propertyImage"
-
         model = Property
         fields = [
             Property.ID,
-            Property.LANDLORD,
+            # Property.LANDLORD,
             Property.PROPERTY_NAME,
             Property.NUMBER_OF_BEDROOMS,
             Property.NUMBER_OF_BATHROOMS,
@@ -75,12 +69,13 @@ class PropertyBaseSerializer(serializers.ModelSerializer):
             Property.PROPERTY_TYPE,
             Property.MONTHLY_RENT,
             Property.SECURITY_DEPOSIT,
-            PROPERTY_ADDRESS,
-            PROPERTY_IMAGE,
+            PropertyAddress.PROPERTY_ADDRESS,
+            PropertyImage.PROPERTY_IMAGE,
         ]
         read_only_fields = [
             Property.ID,
             Property.LANDLORD,
+            Property.IS_OWNERSHIP_VERIFIED,
         ]
 
 
@@ -90,24 +85,44 @@ class ViewablePropertiesSerializer(PropertyBaseSerializer):
 
     class Meta:
         model = Property
-        PROPERTY_AMENITIES = "propertyAmenities"
-        PROPERTY_RULES = "propertyRules"
-
-        new_fields: List = [PROPERTY_AMENITIES, PROPERTY_RULES]
+        new_fields: List = [
+            PropertyAmenities.PROPERTY_AMENITIES,
+            PropertyRules.PROPERTY_RULES,
+        ]
         fields = PropertyBaseSerializer.Meta.fields + new_fields
 
 
 class EditablePropertySerializer(PropertyBaseSerializer):
+    property_service = PropertyService()
     propertyAmenities = PropertyAmenitiesSerializer()
     propertyRules = PropertyRulesSerializer()
 
     class Meta:
         model = Property
-        PROPERTY_AMENITIES = "propertyAmenities"
-        PROPERTY_RULES = "propertyRules"
-
-        new_fields: List = [PROPERTY_AMENITIES, PROPERTY_RULES]
+        new_fields: List = [
+            PropertyAmenities.PROPERTY_AMENITIES,
+            PropertyRules.PROPERTY_RULES,
+        ]
         fields = PropertyBaseSerializer.Meta.fields + new_fields
+
+    def create(self, validated_data):
+        request: Request = self.context.get("request")
+        return self.property_service.create_property(
+            validated_data=validated_data, request=request
+        )
+
+    # def update(self, instance, validated_data):
+    #     print(instance.propertyAddress)
+    #     instance.propertyAddress = validated_data.get(PropertyAddress.PROPERTY_ADDRESS, instance.propertyAddress)
+    #     instance.propertyAmenities = validated_data.get(PropertyAmenities.PROPERTY_AMENITIES, instance.propertyAmenities)
+    #     instance.propertyRules = validated_data.get(PropertyRules.PROPERTY_RULES, instance.propertyRules)
+    #     instance.propertyImage  = validated_data.get(PropertyImage.PROPERTY_IMAGE, instance.propertyImage)
+    #     instance.save()
+    #
+    #     print(instance)
+    #     print(validated_data)
+    #     request: Request = self.context.get("request")
+    #     pass
 
 
 class AvailableLocationSerializer(serializers.ModelSerializer):

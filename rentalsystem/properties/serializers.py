@@ -1,9 +1,13 @@
 from rest_framework import serializers
+from typing import List
+
 from rentalsystem.properties.models import (
     Property,
     PropertyAddress,
     PropertyImage,
     AvailableLocation,
+    PropertyAmenities,
+    PropertyRules,
 )
 
 
@@ -23,10 +27,31 @@ class PropertyImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = PropertyImage
         fields = "__all__"
+        read_only_fields = [
+            Property.ID,
+        ]
+
+
+class PropertyRulesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PropertyRules
+        fields = "__all__"
+        read_only_fields = [
+            Property.ID,
+        ]
+
+
+class PropertyAmenitiesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PropertyAmenities
+        fields = "__all__"
+        read_only_fields = [
+            Property.ID,
+        ]
 
 
 class PropertyBaseSerializer(serializers.ModelSerializer):
-    """Base serializer from property. Every property serializer inherits from this"""
+    """Base serializer for property. Every property serializer inherits from this"""
 
     propertyAddress = PropertyAddressSerializer()
     propertyImage = PropertyImageSerializer(many=True)
@@ -55,15 +80,34 @@ class PropertyBaseSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = [
             Property.ID,
+            Property.LANDLORD,
         ]
 
 
 class ViewablePropertiesSerializer(PropertyBaseSerializer):
-    pass
+    propertyAmenities = PropertyAmenitiesSerializer()
+    propertyRules = PropertyRulesSerializer()
+
+    class Meta:
+        model = Property
+        PROPERTY_AMENITIES = "propertyAmenities"
+        PROPERTY_RULES = "propertyRules"
+
+        new_fields: List = [PROPERTY_AMENITIES, PROPERTY_RULES]
+        fields = PropertyBaseSerializer.Meta.fields + new_fields
 
 
 class EditablePropertySerializer(PropertyBaseSerializer):
-    pass
+    propertyAmenities = PropertyAmenitiesSerializer()
+    propertyRules = PropertyRulesSerializer()
+
+    class Meta:
+        model = Property
+        PROPERTY_AMENITIES = "propertyAmenities"
+        PROPERTY_RULES = "propertyRules"
+
+        new_fields: List = [PROPERTY_AMENITIES, PROPERTY_RULES]
+        fields = PropertyBaseSerializer.Meta.fields + new_fields
 
 
 class AvailableLocationSerializer(serializers.ModelSerializer):

@@ -15,7 +15,7 @@ class PropertyRules(AbstractBaseModel):
     class Meta:
         verbose_name_plural = "Property Rules"
 
-    property = OneToOneField(Property, related_name="propertyRule", on_delete=CASCADE)
+    property = OneToOneField(Property, related_name="propertyRules", on_delete=CASCADE)
     smoking = BooleanField(default=False)
     pet = BooleanField(default=False)
     musicalInstruments = BooleanField(default=False)

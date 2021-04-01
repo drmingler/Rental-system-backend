@@ -17,6 +17,7 @@ from rentalsystem.properties.serializers import (
     ViewablePropertiesSerializer,
     AvailableLocationSerializer,
     EditablePropertySerializer,
+    PropertyBaseSerializer,
 )
 
 
@@ -51,12 +52,12 @@ class EditPropertyDetailsViewSet(
 
 class ViewPropertyDetailsViewSet(RetrieveModelMixin, GenericViewSet):
     queryset = Property.objects.all()
-    serializer_class = EditablePropertySerializer
+    serializer_class = ViewablePropertiesSerializer
 
 
 class SimplePropertySearchViewSet(ListModelMixin, GenericViewSet):
     queryset = Property.objects.all()
-    serializer_class = ViewablePropertiesSerializer
+    serializer_class = PropertyBaseSerializer
     filter_backends = [SearchFilter]
     search_fields = ["landlord__id", "propertyAddress__stateName"]
 

@@ -19,6 +19,7 @@ from rentalsystem.properties.serializers import (
     AvailableLocationSerializer,
     EditablePropertySerializer,
     PropertyBaseSerializer,
+    ImageUploaderSerializer,
 )
 
 
@@ -43,7 +44,7 @@ class EditPropertyDetailsViewSet(
 ):
     property_service = PropertyService()
     permission_classes = [IsLandlord]
-    queryset = Property.objects.all()
+    queryset = property_service.get_all_properties()
     serializer_class = EditablePropertySerializer
 
     def create(self, request, *args, **kwargs):
@@ -53,10 +54,18 @@ class EditPropertyDetailsViewSet(
         )
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(
-            serializer.data, status=status.HTTP_201_CREATED, headers=headers
-        )
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class ImageUploadViewSet(CreateModelMixin, DestroyModelMixin, GenericViewSet):
+    property_service = PropertyService()
+    permission_classes = [IsLandlord]
+
+    def create(self, request, *args, **kwargs):
+        serializer = ImageUploaderSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response(status=status.HTTP_201_CREATED)
 
 
 class ViewPropertyDetailsViewSet(RetrieveModelMixin, GenericViewSet):
@@ -65,7 +74,8 @@ class ViewPropertyDetailsViewSet(RetrieveModelMixin, GenericViewSet):
 
 
 class SimplePropertySearchViewSet(ListModelMixin, GenericViewSet):
-    queryset = Property.objects.all()
+    property_service = PropertyService()
+    queryset = property_service.get_all_properties()
     serializer_class = PropertyBaseSerializer
     filter_backends = [SearchFilter]
     search_fields = ["landlord__id", "propertyAddress__stateName"]

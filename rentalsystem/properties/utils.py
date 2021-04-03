@@ -8,6 +8,6 @@ class UploadLimitReached(APIException):
     )
 
 
-class InvalidPayloadReached(APIException):
+class InvalidPayload(APIException):
     status_code = 400
     default_detail = f"Invalid property upload payload"

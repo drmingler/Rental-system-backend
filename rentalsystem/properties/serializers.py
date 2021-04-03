@@ -1,8 +1,10 @@
 from rest_framework import serializers
 from typing import List
 from drf_writable_nested.serializers import WritableNestedModelSerializer
+from rest_framework.fields import IntegerField, ListField, ImageField, CharField
 from rest_framework.request import Request
 
+from rentalsystem.accounts.serializers import UserSerializer
 from rentalsystem.properties.models import (
     Property,
     PropertyAddress,
@@ -25,25 +27,19 @@ class PropertyAddressSerializer(serializers.ModelSerializer):
 class PropertyImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = PropertyImage
-        exclude = [
-            "property",
-        ]
+        exclude = ["property", "created_at", "updated_at"]
 
 
 class PropertyRulesSerializer(serializers.ModelSerializer):
     class Meta:
         model = PropertyRules
-        exclude = [
-            "property",
-        ]
+        exclude = ["property", "created_at", "updated_at"]
 
 
 class PropertyAmenitiesSerializer(serializers.ModelSerializer):
     class Meta:
         model = PropertyAmenities
-        exclude = [
-            "property",
-        ]
+        exclude = ["property", "created_at", "updated_at"]
 
 
 COMMON_PROPERTY_FIELDS = [
@@ -86,12 +82,14 @@ class PropertyBaseSerializer(serializers.ModelSerializer):
 class ViewablePropertiesSerializer(PropertyBaseSerializer):
     propertyAmenities = PropertyAmenitiesSerializer()
     propertyRules = PropertyRulesSerializer()
+    landlord = UserSerializer()
 
     class Meta:
         model = Property
         new_fields: List = [
             PropertyAmenities.PROPERTY_AMENITIES,
             PropertyRules.PROPERTY_RULES,
+            Property.LANDLORD,
         ]
         fields = PropertyBaseSerializer.Meta.fields + new_fields
 
@@ -128,9 +126,14 @@ class EditablePropertySerializer(WritableNestedModelSerializer):
 class AvailableLocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = AvailableLocation
-        fields = [
-            AvailableLocation.STATE_NAME,
-            AvailableLocation.COUNTRY,
-            AvailableLocation.LONGITUDE,
-            AvailableLocation.LATITUDE,
-        ]
+        exclude = ["property", "created_at", "updated_at"]
+
+
+class ImageUploaderSerializer(serializers.Serializer):
+    property_service = PropertyService()
+    id = IntegerField(min_value=1, required=True)
+    modelName = CharField(min_length=2, required=True)
+    image = ListField(child=ImageField(), required=True)
+
+    def create(self, validated_data):
+        return self.property_service.upload_image(validated_data=validated_data)

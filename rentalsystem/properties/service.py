@@ -1,5 +1,6 @@
 from typing import Dict, List
 from rest_framework.request import Request
+from django.apps import apps
 
 from rentalsystem.accounts.models import User
 from rentalsystem.properties.models import (
@@ -7,9 +8,8 @@ from rentalsystem.properties.models import (
     PropertyAddress,
     PropertyRules,
     PropertyAmenities,
-    PropertyImage,
 )
-from rentalsystem.properties.utils import UploadLimitReached, InvalidPayloadReached
+from rentalsystem.properties.utils import UploadLimitReached, InvalidPayload
 from rentalsystem.subscription.models import Subscription
 
 
@@ -17,6 +17,9 @@ class PropertyService:
     def __init__(self):
         self.property = Property
         self.subscription = Subscription
+
+    def get_all_properties(self) -> List[Property]:
+        return Property.objects.all()
 
     def get_property_count(self, user: User) -> int:
         return self.property.objects.filter(landlord=user).count()
@@ -35,26 +38,43 @@ class PropertyService:
             raise UploadLimitReached()
         return False
 
+    def get_model_instance(self, model_name: str):
+        instance = next(
+            filter(lambda model: model.__name__ == model_name, apps.get_models())
+        )
+        return instance
+
     def create_property(self, validated_data: Dict, request: Request) -> Property:
-        property_address: Dict = validated_data.pop(PropertyAddress.PROPERTY_ADDRESS)
         property_amenities: Dict = validated_data.pop(
             PropertyAmenities.PROPERTY_AMENITIES
         )
+        property_address: Dict = validated_data.pop(PropertyAddress.PROPERTY_ADDRESS)
         property_rules: Dict = validated_data.pop(PropertyRules.PROPERTY_RULES)
-        property_image: List = validated_data.pop(PropertyImage.PROPERTY_IMAGE)
 
         new_property = Property.objects.create(**validated_data, landlord=request.user)
         try:
             PropertyAddress.objects.create(**property_address, property=new_property)
+            PropertyRules.objects.create(**property_rules, property=new_property)
             PropertyAmenities.objects.create(
                 **property_amenities, property=new_property
             )
-            PropertyRules.objects.create(**property_rules, property=new_property)
-
-            for image in property_image:
-                PropertyImage.objects.create(image=image, property=new_property)
 
         except Exception:
-            raise InvalidPayloadReached()
+            raise InvalidPayload()
 
         return new_property
+
+    def upload_image(self, validated_data: Dict):
+        model_name: str = validated_data.pop("modelName")
+        images: List = validated_data.pop("image")
+
+        try:
+            property_instance = Property.objects.get(**validated_data)
+            instance = self.get_model_instance(model_name=model_name)
+            for image in images:
+                instance.objects.create(image=image, property=property_instance)
+
+        except Exception:
+            raise InvalidPayload()
+
+        return instance

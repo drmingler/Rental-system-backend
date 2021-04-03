@@ -12,7 +12,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from rentalsystem.common.permission import IsLandlord
-from rentalsystem.properties.models import Property, AvailableLocation
+from rentalsystem.properties.models import Property, AvailableLocation, PropertyImage
 from rentalsystem.properties.service import PropertyService
 from rentalsystem.properties.serializers import (
     ViewablePropertiesSerializer,
@@ -22,10 +22,6 @@ from rentalsystem.properties.serializers import (
     ImageUploaderSerializer,
 )
 
-
-## create property landlord create
-## update property landlord update
-## delete property landlord delete
 
 ### using advance search
 ## search for  properties by address
@@ -44,7 +40,7 @@ class EditPropertyDetailsViewSet(
 ):
     property_service = PropertyService()
     permission_classes = [IsLandlord]
-    queryset = property_service.get_all_properties()
+    queryset = property_service.get_properties()
     serializer_class = EditablePropertySerializer
 
     def create(self, request, *args, **kwargs):
@@ -57,7 +53,7 @@ class EditPropertyDetailsViewSet(
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class ImageUploadViewSet(CreateModelMixin, DestroyModelMixin, GenericViewSet):
+class PropertyImageViewSet(CreateModelMixin, DestroyModelMixin, GenericViewSet):
     property_service = PropertyService()
     permission_classes = [IsLandlord]
 
@@ -67,6 +63,12 @@ class ImageUploadViewSet(CreateModelMixin, DestroyModelMixin, GenericViewSet):
         self.perform_create(serializer)
         return Response(status=status.HTTP_201_CREATED)
 
+    def destroy(self, request, *args, **kwargs):
+        pk = kwargs["pk"]
+        instance = PropertyImage.objects.get(id=pk)
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class ViewPropertyDetailsViewSet(RetrieveModelMixin, GenericViewSet):
     queryset = Property.objects.all()
@@ -75,7 +77,7 @@ class ViewPropertyDetailsViewSet(RetrieveModelMixin, GenericViewSet):
 
 class SimplePropertySearchViewSet(ListModelMixin, GenericViewSet):
     property_service = PropertyService()
-    queryset = property_service.get_all_properties()
+    queryset = property_service.get_properties()
     serializer_class = PropertyBaseSerializer
     filter_backends = [SearchFilter]
     search_fields = ["landlord__id", "propertyAddress__stateName"]

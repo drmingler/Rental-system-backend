@@ -99,13 +99,11 @@ class EditablePropertySerializer(WritableNestedModelSerializer):
     propertyAmenities = PropertyAmenitiesSerializer()
     propertyRules = PropertyRulesSerializer()
     propertyAddress = PropertyAddressSerializer()
-    propertyImage = PropertyImageSerializer(many=True)
 
     class Meta:
         model = Property
         fields = COMMON_PROPERTY_FIELDS + [
             PropertyAddress.PROPERTY_ADDRESS,
-            PropertyImage.PROPERTY_IMAGE,
             PropertyAmenities.PROPERTY_AMENITIES,
             PropertyRules.PROPERTY_RULES,
         ]

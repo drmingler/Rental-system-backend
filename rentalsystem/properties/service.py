@@ -18,7 +18,7 @@ class PropertyService:
         self.property = Property
         self.subscription = Subscription
 
-    def get_all_properties(self) -> List[Property]:
+    def get_properties(self) -> List[Property]:
         return Property.objects.all()
 
     def get_property_count(self, user: User) -> int:

@@ -74,6 +74,7 @@ class Property(AbstractBaseModel):
 class PropertyAddress(AbstractBaseModel):
     """ Property's Address Model"""
 
+    PROPERTY_ADDRESS = "propertyAddress"
     PROPERTY = "property"
     ADDRESS = "address"
     STATE_NAME = "stateName"
@@ -95,6 +96,7 @@ class PropertyAddress(AbstractBaseModel):
 class PropertyImage(AbstractBaseModel):
     """ Property Image Model"""
 
+    PROPERTY_IMAGE = "propertyImage"
     property = ForeignKey(Property, related_name="propertyImage", on_delete=CASCADE)
     image = ImageField(blank=True, storage=MediaRootS3Boto3Storage())
 

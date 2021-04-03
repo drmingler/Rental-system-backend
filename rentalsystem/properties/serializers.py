@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from typing import List, Dict
+from typing import List
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 from rest_framework.request import Request
 
@@ -46,7 +46,23 @@ class PropertyAmenitiesSerializer(serializers.ModelSerializer):
         ]
 
 
-# class PropertyBaseSerializer(WritableNestedModelSerializer):
+COMMON_PROPERTY_FIELDS = [
+    Property.ID,
+    Property.LANDLORD,
+    Property.PROPERTY_NAME,
+    Property.NUMBER_OF_BEDROOMS,
+    Property.NUMBER_OF_BATHROOMS,
+    Property.LISTING_DESCRIPTION,
+    Property.AVAILABLE_FROM,
+    Property.IS_OWNERSHIP_VERIFIED,
+    Property.UNIT,
+    Property.SIZE,
+    Property.PROPERTY_TYPE,
+    Property.MONTHLY_RENT,
+    Property.SECURITY_DEPOSIT,
+]
+
+
 class PropertyBaseSerializer(serializers.ModelSerializer):
     """Base serializer for property. Every property serializer inherits from this"""
 
@@ -55,23 +71,11 @@ class PropertyBaseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Property
-        fields = [
-            Property.ID,
-            # Property.LANDLORD,
-            Property.PROPERTY_NAME,
-            Property.NUMBER_OF_BEDROOMS,
-            Property.NUMBER_OF_BATHROOMS,
-            Property.LISTING_DESCRIPTION,
-            Property.AVAILABLE_FROM,
-            Property.IS_OWNERSHIP_VERIFIED,
-            Property.UNIT,
-            Property.SIZE,
-            Property.PROPERTY_TYPE,
-            Property.MONTHLY_RENT,
-            Property.SECURITY_DEPOSIT,
+        fields = COMMON_PROPERTY_FIELDS + [
             PropertyAddress.PROPERTY_ADDRESS,
             PropertyImage.PROPERTY_IMAGE,
         ]
+
         read_only_fields = [
             Property.ID,
             Property.LANDLORD,
@@ -92,37 +96,33 @@ class ViewablePropertiesSerializer(PropertyBaseSerializer):
         fields = PropertyBaseSerializer.Meta.fields + new_fields
 
 
-class EditablePropertySerializer(PropertyBaseSerializer):
+class EditablePropertySerializer(WritableNestedModelSerializer):
     property_service = PropertyService()
     propertyAmenities = PropertyAmenitiesSerializer()
     propertyRules = PropertyRulesSerializer()
+    propertyAddress = PropertyAddressSerializer()
+    propertyImage = PropertyImageSerializer(many=True)
 
     class Meta:
         model = Property
-        new_fields: List = [
+        fields = COMMON_PROPERTY_FIELDS + [
+            PropertyAddress.PROPERTY_ADDRESS,
+            PropertyImage.PROPERTY_IMAGE,
             PropertyAmenities.PROPERTY_AMENITIES,
             PropertyRules.PROPERTY_RULES,
         ]
-        fields = PropertyBaseSerializer.Meta.fields + new_fields
+
+        read_only_fields = [
+            Property.ID,
+            Property.LANDLORD,
+            Property.IS_OWNERSHIP_VERIFIED,
+        ]
 
     def create(self, validated_data):
         request: Request = self.context.get("request")
         return self.property_service.create_property(
             validated_data=validated_data, request=request
         )
-
-    # def update(self, instance, validated_data):
-    #     print(instance.propertyAddress)
-    #     instance.propertyAddress = validated_data.get(PropertyAddress.PROPERTY_ADDRESS, instance.propertyAddress)
-    #     instance.propertyAmenities = validated_data.get(PropertyAmenities.PROPERTY_AMENITIES, instance.propertyAmenities)
-    #     instance.propertyRules = validated_data.get(PropertyRules.PROPERTY_RULES, instance.propertyRules)
-    #     instance.propertyImage  = validated_data.get(PropertyImage.PROPERTY_IMAGE, instance.propertyImage)
-    #     instance.save()
-    #
-    #     print(instance)
-    #     print(validated_data)
-    #     request: Request = self.context.get("request")
-    #     pass
 
 
 class AvailableLocationSerializer(serializers.ModelSerializer):

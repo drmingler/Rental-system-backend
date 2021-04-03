@@ -12,6 +12,8 @@ from rentalsystem.properties.models import Property
 class PropertyRules(AbstractBaseModel):
     """ Property's Rules Model"""
 
+    PROPERTY_RULES = "propertyRules"
+
     class Meta:
         verbose_name_plural = "Property Rules"
 
@@ -23,6 +25,8 @@ class PropertyRules(AbstractBaseModel):
 
 class PropertyAmenities(AbstractBaseModel):
     """ Property Amenities Model"""
+
+    PROPERTY_AMENITIES = "propertyAmenities"
 
     class Meta:
         verbose_name_plural = "Property Amenities"

@@ -13,6 +13,7 @@ from rest_framework.viewsets import GenericViewSet
 
 from rentalsystem.common.permission import IsLandlord
 from rentalsystem.properties.models import Property, AvailableLocation
+from rentalsystem.properties.service import PropertyService
 from rentalsystem.properties.serializers import (
     ViewablePropertiesSerializer,
     AvailableLocationSerializer,
@@ -21,7 +22,6 @@ from rentalsystem.properties.serializers import (
 )
 
 
-## get property everybody retrieve
 ## create property landlord create
 ## update property landlord update
 ## delete property landlord delete
@@ -37,17 +37,26 @@ from rentalsystem.properties.serializers import (
 ## get low to high price properties
 ## get high to low price properties
 
-## get properties by landlord id
-## get properties by state
-## get current state
-
 
 class EditPropertyDetailsViewSet(
     CreateModelMixin, DestroyModelMixin, UpdateModelMixin, GenericViewSet
 ):
+    property_service = PropertyService()
     permission_classes = [IsLandlord]
     queryset = Property.objects.all()
     serializer_class = EditablePropertySerializer
+
+    def create(self, request, *args, **kwargs):
+        self.property_service.can_user_upload_more_houses(request.user)
+        serializer = self.get_serializer(
+            data=request.data, context={"request": request}
+        )
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED, headers=headers
+        )
 
 
 class ViewPropertyDetailsViewSet(RetrieveModelMixin, GenericViewSet):

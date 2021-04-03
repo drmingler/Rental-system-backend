@@ -17,6 +17,9 @@ class UserAdmin(admin.ModelAdmin):
         "address",
         "nationality",
     ]
+    search_fields = [
+        "email",
+    ]
 
 
 admin.site.register(User, UserAdmin)

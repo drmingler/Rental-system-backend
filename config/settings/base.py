@@ -69,6 +69,8 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "corsheaders",
     "djoser",
+    "django_elasticsearch_dsl",
+    "django_elasticsearch_dsl_drf",
 ]
 
 LOCAL_APPS = [
@@ -76,6 +78,7 @@ LOCAL_APPS = [
     "rentalsystem.properties.apps.PropertiesConfig",
     "rentalsystem.subscription.apps.SubscriptionConfig",
     "rentalsystem.common.apps.CommonConfig",
+    "rentalsystem.search.apps.SearchConfig",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -156,7 +159,6 @@ MIDDLEWARE = [
 STATIC_ROOT = str(ROOT_DIR / "staticfiles")
 # https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = "/staticfiles/"
-
 
 # MEDIA
 # ------------------------------------------------------------------------------
@@ -285,7 +287,6 @@ CELERY_TASK_SOFT_TIME_LIMIT = 60
 # http://docs.celeryproject.org/en/latest/userguide/configuration.html#beat-scheduler
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
-
 # django-rest-framework
 # -------------------------------------------------------------------------------
 # django-rest-framework - https://www.django-rest-framework.org/api-guide/settings/
@@ -303,3 +304,8 @@ REST_FRAMEWORK = {
 CORS_URLS_REGEX = r"^/api/.*$"
 # Your stuff...
 # ------------------------------------------------------------------------------
+# Elastic search config
+# Elasticsearch configuration
+ELASTICSEARCH_DSL = {
+    "default": {"hosts": "localhost:9200"},
+}

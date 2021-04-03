@@ -70,6 +70,15 @@ class Property(AbstractBaseModel):
         "Security deposit", default=0.00, max_digits=10, decimal_places=2
     )
 
+    @property
+    def user_indexing(self):
+        """Publisher for indexing.
+
+        Used in Elasticsearch indexing.
+        """
+        if self.landlord is not None:
+            return self.landlord.first_name
+
 
 class PropertyAddress(AbstractBaseModel):
     """ Property's Address Model"""

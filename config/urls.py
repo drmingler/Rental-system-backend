@@ -24,6 +24,7 @@ urlpatterns += [
     path("api/", include("rentalsystem.accounts.urls")),
     path("api/", include("rentalsystem.subscription.urls")),
     path("api/", include("rentalsystem.properties.urls")),
+    path("api/", include("rentalsystem.search.urls")),
 ]
 
 if settings.DEBUG:

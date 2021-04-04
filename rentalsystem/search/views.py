@@ -3,7 +3,7 @@ from django_elasticsearch_dsl_drf.filter_backends import (
     IdsFilterBackend,
     OrderingFilterBackend,
     DefaultOrderingFilterBackend,
-    SearchFilterBackend,
+    CompoundSearchFilterBackend,
 )
 from django_elasticsearch_dsl_drf.viewsets import BaseDocumentViewSet
 from django_elasticsearch_dsl_drf.pagination import PageNumberPagination
@@ -32,7 +32,7 @@ class PropertyDocumentView(BaseDocumentViewSet):
         IdsFilterBackend,
         OrderingFilterBackend,
         DefaultOrderingFilterBackend,
-        SearchFilterBackend,
+        CompoundSearchFilterBackend,
     ]
     # Define search fields
     search_fields = (
@@ -82,23 +82,46 @@ class PropertyDocumentView(BaseDocumentViewSet):
         Property.AVAILABLE_FROM: Property.AVAILABLE_FROM,
         Property.LISTING_DESCRIPTION: Property.LISTING_DESCRIPTION,
         Property.IS_OWNERSHIP_VERIFIED: Property.IS_OWNERSHIP_VERIFIED,
+        CREATED_AT: CREATED_AT,
+        # Access PropertyRules nested fields
         PropertyRules.SMOKING: "propertyRules.smoking",
         PropertyRules.PET: "propertyRules.pet",
         PropertyRules.MUSICAL_INSTRUMENTS: "propertyRules.musicalInstruments",
+        # Access PropertyAddress nested fields
         PropertyAddress.STATE_NAME: "propertyAddress.stateName",
         PropertyAddress.ADDRESS: "propertyAddress.address",
         PropertyAddress.LONGITUDE: "propertyAddress.longitude",
         PropertyAddress.LATITUDE: "propertyAddress.latitude",
-        CREATED_AT: CREATED_AT,
+        # Access PropertyAmenities nested fields
+        PropertyAmenities.POOL: "propertyAmenities.pool",
+        PropertyAmenities.GARDEN: "propertyAmenities.garden",
+        PropertyAmenities.ELEVATOR: "propertyAmenities.elevator",
+        PropertyAmenities.DOORMAN: "propertyAmenities.doorman",
+        PropertyAmenities.DECK: "propertyAmenities.deck",
+        PropertyAmenities.WASHER: "propertyAmenities.washer",
+        PropertyAmenities.GYM: "propertyAmenities.gym",
+        PropertyAmenities.PARKING: "propertyAmenities.parking",
+        PropertyAmenities.FIRE_PLACE: "propertyAmenities.firePlace",
+        PropertyAmenities.AIR_CONDITION: "propertyAmenities.airCondition",
+        PropertyAmenities.DISH_WASHER: "propertyAmenities.dishWasher",
+        PropertyAmenities.ITEM_STORAGE: "propertyAmenities.itemStorage",
+        PropertyAmenities.WHEELCHAIR: "propertyAmenities.wheelchair",
+        PropertyAmenities.BALCONY: "propertyAmenities.balcony",
+        PropertyAmenities.HARD_FLOOR: "propertyAmenities.hardFloor",
+        PropertyAmenities.FURNISHED: "propertyAmenities.furnished",
+        PropertyAmenities.VIEW: "propertyAmenities.view",
+        PropertyAmenities.HIGH_RISE: "propertyAmenities.highRise",
+        PropertyAmenities.STUDENT_FRIENDLY: "propertyAmenities.studentFriendly",
+        PropertyAmenities.UTILITIES: "propertyAmenities.utilities",
     }
     # Define ordering fields
     ordering_fields = {
-        Property.ID: Property.ID,
+        ID: ID,
         Property.MONTHLY_RENT: Property.MONTHLY_RENT,
         CREATED_AT: CREATED_AT,
     }
     # default ordering
     ordering = (
-        Property.ID,
+        ID,
         CREATED_AT,
     )

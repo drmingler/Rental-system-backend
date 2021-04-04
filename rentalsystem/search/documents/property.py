@@ -11,7 +11,12 @@ from django_elasticsearch_dsl import (
 )
 
 from rentalsystem.common.models import PROPERTY
-from rentalsystem.properties.models import PropertyRules, Property, PropertyAddress
+from rentalsystem.properties.models import (
+    PropertyRules,
+    Property,
+    PropertyAddress,
+    PropertyAmenities,
+)
 
 # Name of the Elasticsearch index
 INDEX = Index(settings.ELASTICSEARCH_INDEX_NAMES[__name__])
@@ -57,6 +62,33 @@ class PropertyDocument(Document):
             PropertyAddress.STATE_NAME: TextField(),
             PropertyAddress.LATITUDE: FloatField(),
             PropertyAddress.LONGITUDE: FloatField(),
+        }
+    )
+    propertyAmenities = ObjectField(
+        properties={
+            PROPERTY: TextField(
+                attr="property_indexing",
+            ),
+            PropertyAmenities.POOL: BooleanField(),
+            PropertyAmenities.GARDEN: BooleanField(),
+            PropertyAmenities.ELEVATOR: BooleanField(),
+            PropertyAmenities.DOORMAN: BooleanField(),
+            PropertyAmenities.DECK: BooleanField(),
+            PropertyAmenities.WASHER: BooleanField(),
+            PropertyAmenities.GYM: BooleanField(),
+            PropertyAmenities.PARKING: BooleanField(),
+            PropertyAmenities.FIRE_PLACE: BooleanField(),
+            PropertyAmenities.AIR_CONDITION: BooleanField(),
+            PropertyAmenities.DISH_WASHER: BooleanField(),
+            PropertyAmenities.ITEM_STORAGE: BooleanField(),
+            PropertyAmenities.WHEELCHAIR: BooleanField(),
+            PropertyAmenities.BALCONY: BooleanField(),
+            PropertyAmenities.HARD_FLOOR: BooleanField(),
+            PropertyAmenities.FURNISHED: BooleanField(),
+            PropertyAmenities.VIEW: BooleanField(),
+            PropertyAmenities.HIGH_RISE: BooleanField(),
+            PropertyAmenities.STUDENT_FRIENDLY: BooleanField(),
+            PropertyAmenities.UTILITIES: BooleanField(),
         }
     )
 

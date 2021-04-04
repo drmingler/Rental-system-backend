@@ -70,7 +70,6 @@ class PropertyAmenitiesAdmin(admin.ModelAdmin):
         "garden",
         "elevator",
         "doorman",
-        "dryer",
         "washer",
         "gym",
         "parking",

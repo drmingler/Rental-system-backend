@@ -29,7 +29,6 @@ class PropertyAmenities(AbstractPropertyBaseModel):
     GARDEN = "garden"
     ELEVATOR = "elevator"
     DOORMAN = "doorman"
-    DRYER = "dryer"
     DECK = "deck"
     WASHER = "washer"
     GYM = "gym"
@@ -39,6 +38,7 @@ class PropertyAmenities(AbstractPropertyBaseModel):
     DISH_WASHER = "dishWasher"
     ITEM_STORAGE = "itemStorage"
     WHEELCHAIR = "wheelchair"
+    BALCONY = "balcony"
     HARD_FLOOR = "hardFloor"
     FURNISHED = "furnished"
     VIEW = "view"
@@ -56,7 +56,6 @@ class PropertyAmenities(AbstractPropertyBaseModel):
     garden = BooleanField(default=False)
     elevator = BooleanField(default=False)
     doorman = BooleanField(default=False)
-    dryer = BooleanField(default=False)
     deck = BooleanField(default=False)
     washer = BooleanField(default=False)
     gym = BooleanField(default=False)

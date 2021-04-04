@@ -1,10 +1,5 @@
-from django.db.models import (
-    CASCADE,
-    CharField,
-    BooleanField,
-    DecimalField,
-    OneToOneField,
-)
+from django.db.models import CASCADE, CharField, BooleanField, OneToOneField, FloatField
+
 from rentalsystem.common.models import AbstractBaseModel, AbstractPropertyBaseModel
 from rentalsystem.properties.models import Property
 
@@ -30,6 +25,26 @@ class PropertyAmenities(AbstractPropertyBaseModel):
     """ Property Amenities Model"""
 
     PROPERTY_AMENITIES = "propertyAmenities"
+    POOL = "pool"
+    GARDEN = "garden"
+    ELEVATOR = "elevator"
+    DOORMAN = "doorman"
+    DRYER = "dryer"
+    DECK = "deck"
+    WASHER = "washer"
+    GYM = "gym"
+    PARKING = "parking"
+    FIRE_PLACE = "firePlace"
+    AIR_CONDITION = "airCondition"
+    DISH_WASHER = "dishWasher"
+    ITEM_STORAGE = "itemStorage"
+    WHEELCHAIR = "wheelchair"
+    HARD_FLOOR = "hardFloor"
+    FURNISHED = "furnished"
+    VIEW = "view"
+    HIGH_RISE = "highRise"
+    STUDENT_FRIENDLY = "studentFriendly"
+    UTILITIES = "utilities"
 
     class Meta:
         verbose_name_plural = "Property Amenities"
@@ -68,7 +83,13 @@ class AvailableLocation(AbstractBaseModel):
     that falls in the range of the longitude and latitude.
     """
 
-    latitude = DecimalField(default=None, blank=True, max_digits=6, decimal_places=2)
-    longitude = DecimalField(default=None, blank=True, max_digits=6, decimal_places=2)
+    latitude = FloatField(
+        default=0.00,
+        blank=True,
+    )
+    longitude = FloatField(
+        default=0.00,
+        blank=True,
+    )
     stateName = CharField("State name", blank=True, max_length=50)
     country = CharField(blank=True, max_length=40)

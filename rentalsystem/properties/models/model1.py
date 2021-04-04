@@ -9,8 +9,9 @@ from django.db.models import (
     OneToOneField,
     FileField,
     IntegerField,
+    FloatField,
+    ImageField,
 )
-from django.db.models.fields.files import ImageField
 
 from rentalsystem.accounts.models import User
 from rentalsystem.common.models import AbstractBaseModel, AbstractPropertyBaseModel
@@ -96,8 +97,14 @@ class PropertyAddress(AbstractPropertyBaseModel):
     )
     address = CharField(default=None, max_length=255)
     stateName = CharField("State name", max_length=50, blank=True)
-    latitude = DecimalField(default=None, blank=True, max_digits=6, decimal_places=2)
-    longitude = DecimalField(default=None, blank=True, max_digits=6, decimal_places=2)
+    latitude = FloatField(
+        default=0.00,
+        blank=True,
+    )
+    longitude = FloatField(
+        default=0.00,
+        blank=True,
+    )
 
 
 class PropertyImage(AbstractPropertyBaseModel):

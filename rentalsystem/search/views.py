@@ -9,7 +9,12 @@ from django_elasticsearch_dsl_drf.viewsets import BaseDocumentViewSet
 from django_elasticsearch_dsl_drf.pagination import PageNumberPagination
 
 from rentalsystem.common.models import CREATED_AT, ID
-from rentalsystem.properties.models import Property, PropertyRules
+from rentalsystem.properties.models import (
+    Property,
+    PropertyRules,
+    PropertyAddress,
+    PropertyAmenities,
+)
 from rentalsystem.search.documents.property import PropertyDocument
 from rentalsystem.search.serializers import PropertyDocumentSerializer
 from rentalsystem.search.utils import NUMBER_LOOKUP, STRING_LOOKUP
@@ -31,15 +36,9 @@ class PropertyDocumentView(BaseDocumentViewSet):
     ]
     # Define search fields
     search_fields = (
-        Property.MONTHLY_RENT,
-        Property.NUMBER_OF_BEDROOMS,
-        Property.NUMBER_OF_BATHROOMS,
-        Property.PROPERTY_TYPE,
-        PropertyRules.PROPERTY_RULES
-        # 'houseAddress'
-        # 'amenities'
-        # 'longitude'
-        # 'latitude'
+        PropertyRules.PROPERTY_RULES,
+        PropertyAddress.PROPERTY_ADDRESS,
+        PropertyAmenities.PROPERTY_AMENITIES,
     )
     # Define filter fields
     filter_fields = {
@@ -72,11 +71,11 @@ class PropertyDocumentView(BaseDocumentViewSet):
             "lookups": STRING_LOOKUP,
         },
         Property.MONTHLY_RENT: {
-            "field": "monthlyRent",
+            "field": Property.MONTHLY_RENT,
             "lookups": NUMBER_LOOKUP,
         },
         Property.SECURITY_DEPOSIT: {
-            "field": "securityDeposit",
+            "field": Property.SECURITY_DEPOSIT,
             "lookups": NUMBER_LOOKUP,
         },
         Property.PROPERTY_NAME: Property.PROPERTY_NAME,
@@ -86,6 +85,10 @@ class PropertyDocumentView(BaseDocumentViewSet):
         PropertyRules.SMOKING: "propertyRules.smoking",
         PropertyRules.PET: "propertyRules.pet",
         PropertyRules.MUSICAL_INSTRUMENTS: "propertyRules.musicalInstruments",
+        PropertyAddress.STATE_NAME: "propertyAddress.stateName",
+        PropertyAddress.ADDRESS: "propertyAddress.address",
+        PropertyAddress.LONGITUDE: "propertyAddress.longitude",
+        PropertyAddress.LATITUDE: "propertyAddress.latitude",
         CREATED_AT: CREATED_AT,
     }
     # Define ordering fields

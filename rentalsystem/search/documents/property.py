@@ -11,7 +11,7 @@ from django_elasticsearch_dsl import (
 )
 
 from rentalsystem.common.models import PROPERTY
-from rentalsystem.properties.models import PropertyRules, Property
+from rentalsystem.properties.models import PropertyRules, Property, PropertyAddress
 
 # Name of the Elasticsearch index
 INDEX = Index(settings.ELASTICSEARCH_INDEX_NAMES[__name__])
@@ -46,6 +46,17 @@ class PropertyDocument(Document):
             PropertyRules.SMOKING: BooleanField(),
             PropertyRules.PET: BooleanField(),
             PropertyRules.MUSICAL_INSTRUMENTS: BooleanField(),
+        }
+    )
+    propertyAddress = ObjectField(
+        properties={
+            PROPERTY: TextField(
+                attr="property_indexing",
+            ),
+            PropertyAddress.ADDRESS: TextField(),
+            PropertyAddress.STATE_NAME: TextField(),
+            PropertyAddress.LATITUDE: FloatField(),
+            PropertyAddress.LONGITUDE: FloatField(),
         }
     )
 

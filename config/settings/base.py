@@ -312,5 +312,6 @@ ELASTICSEARCH_DSL = {
 # Name of the Elasticsearch index
 ELASTICSEARCH_INDEX_NAMES = {
     "rentalsystem.search.documents.property": "property",
+    "rentalsystem.search.documents.propertyaddress": "propertyaddress",
     "rentalsystem.search.documents.propertyrules": "propertyrules",
 }

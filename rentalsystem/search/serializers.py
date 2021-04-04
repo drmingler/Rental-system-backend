@@ -6,9 +6,11 @@ from rentalsystem.properties.models import (
     PropertyRules,
     PropertyAddress,
     PropertyAmenities,
+    PropertyImage,
 )
 from rentalsystem.search.documents.propertyaddress import PropertyAddressDocument
 from rentalsystem.search.documents.propertyamenities import PropertyAmenitiesDocument
+from rentalsystem.search.documents.propertyimage import PropertyImageDocument
 from rentalsystem.search.documents.propertyrules import PropertyRulesDocument
 from rentalsystem.search.documents.property import PropertyDocument
 
@@ -31,12 +33,19 @@ class PropertyAmenitiesDocumentSerializer(DocumentSerializer):
         exclude = [ID, PROPERTY]
 
 
+class PropertyImageDocumentSerializer(DocumentSerializer):
+    class Meta:
+        document = PropertyImageDocument
+        exclude = [PROPERTY]
+
+
 class PropertyDocumentSerializer(DocumentSerializer):
     """Serializer for the Property document."""
 
     propertyRules = PropertyRulesDocumentSerializer()
     propertyAddress = PropertyAddressDocumentSerializer()
     propertyAmenities = PropertyAmenitiesDocumentSerializer()
+    propertyImage = PropertyImageDocumentSerializer(many=True)
 
     class Meta:
         document = PropertyDocument
@@ -58,4 +67,5 @@ class PropertyDocumentSerializer(DocumentSerializer):
             PropertyRules.PROPERTY_RULES,
             PropertyAddress.PROPERTY_ADDRESS,
             PropertyAmenities.PROPERTY_AMENITIES,
+            PropertyImage.PROPERTY_IMAGE,
         )

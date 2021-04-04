@@ -8,14 +8,18 @@ from django_elasticsearch_dsl import (
     BooleanField,
     FloatField,
     ObjectField,
+    FileField,
+    ListField,
+    Object,
 )
 
-from rentalsystem.common.models import PROPERTY
+from rentalsystem.common.models import PROPERTY, ID
 from rentalsystem.properties.models import (
     PropertyRules,
     Property,
     PropertyAddress,
     PropertyAmenities,
+    PropertyImage,
 )
 
 # Name of the Elasticsearch index
@@ -89,6 +93,15 @@ class PropertyDocument(Document):
             PropertyAmenities.HIGH_RISE: BooleanField(),
             PropertyAmenities.STUDENT_FRIENDLY: BooleanField(),
             PropertyAmenities.UTILITIES: BooleanField(),
+        }
+    )
+    propertyImage = ObjectField(
+        properties={
+            ID: IntegerField(attr="id"),
+            PROPERTY: TextField(
+                attr="property_indexing",
+            ),
+            PropertyImage.IMAGE: FileField(),
         }
     )
 

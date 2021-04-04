@@ -116,6 +116,14 @@ class PropertyImage(AbstractPropertyBaseModel):
     property = ForeignKey(Property, related_name="propertyImage", on_delete=CASCADE)
     image = ImageField(blank=True, storage=MediaRootS3Boto3Storage())
 
+    def image_indexing(self):
+        """Tags for indexing.
+
+        Used in Elasticsearch indexing.
+        """
+        if self.image is not None:
+            return [{"id": self.id, "image": self.image.url}]
+
 
 class OwnershipDocument(AbstractPropertyBaseModel):
     """ Property Document Model"""

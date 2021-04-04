@@ -315,4 +315,5 @@ ELASTICSEARCH_INDEX_NAMES = {
     "rentalsystem.search.documents.propertyaddress": "propertyaddress",
     "rentalsystem.search.documents.propertyrules": "propertyrules",
     "rentalsystem.search.documents.propertyamenities": "propertyamenities",
+    "rentalsystem.search.documents.propertyimage": "propertyimage",
 }

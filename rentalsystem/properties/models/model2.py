@@ -13,6 +13,9 @@ class PropertyRules(AbstractPropertyBaseModel):
     """ Property's Rules Model"""
 
     PROPERTY_RULES = "propertyRules"
+    SMOKING = "smoking"
+    PET = "pet"
+    MUSICAL_INSTRUMENTS = "musicalInstruments"
 
     class Meta:
         verbose_name_plural = "Property Rules"

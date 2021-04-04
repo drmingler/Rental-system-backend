@@ -1,11 +1,16 @@
 from django.db import models
 
+# Common model fields
+ID = "id"
+CREATED_AT = "created_at"
+UPDATED_AT = "updated_at"
+PROPERTY = "property"
 
-# Create your models here.
+
 class AbstractBaseModel(models.Model):
     """
-    Base abstract model, that has `uuid` instead of `id` and includes
-    `created_at`, `updated_at` fields.
+    Base abstract model, that includes
+    `created_at` and `updated_at` fields.
     """
 
     created_at = models.DateTimeField("Created at", auto_now_add=True)

@@ -83,7 +83,6 @@ class PropertyAddress(AbstractPropertyBaseModel):
     """ Property's Address Model"""
 
     PROPERTY_ADDRESS = "propertyAddress"
-    PROPERTY = "property"
     ADDRESS = "address"
     STATE_NAME = "stateName"
     LATITUDE = "latitude"
@@ -105,12 +104,17 @@ class PropertyImage(AbstractPropertyBaseModel):
     """ Property Image Model"""
 
     PROPERTY_IMAGE = "propertyImage"
+    IMAGE = "image"
+
     property = ForeignKey(Property, related_name="propertyImage", on_delete=CASCADE)
     image = ImageField(blank=True, storage=MediaRootS3Boto3Storage())
 
 
 class OwnershipDocument(AbstractPropertyBaseModel):
     """ Property Document Model"""
+
+    PROPERTY_DOCUMENT = "propertyDocument"
+    DOCUMENT = "document"
 
     property = ForeignKey(Property, related_name="propertyDocument", on_delete=CASCADE)
     document = FileField(blank=True, storage=MediaRootS3Boto3Storage())

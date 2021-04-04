@@ -1,92 +1,55 @@
 from django.conf import settings
-from django_elasticsearch_dsl import Document, Index, fields
-from elasticsearch_dsl import analyzer
+from django_elasticsearch_dsl import (
+    Document,
+    Index,
+    IntegerField,
+    TextField,
+    DateField,
+    BooleanField,
+    FloatField,
+    ObjectField,
+)
 
-from rentalsystem.properties.models import Property
+from rentalsystem.common.models import PROPERTY
+from rentalsystem.properties.models import PropertyRules, Property
 
 # Name of the Elasticsearch index
 INDEX = Index(settings.ELASTICSEARCH_INDEX_NAMES[__name__])
-
-# See Elasticsearch Indices API reference for available settings
 INDEX.settings(number_of_shards=1, number_of_replicas=1)
-
-html_strip = analyzer(
-    "html_strip",
-    tokenizer="standard",
-    filter=["standard", "lowercase", "stop", "snowball"],
-    char_filter=["html_strip"],
-)
 
 
 @INDEX.doc_type
 class PropertyDocument(Document):
-    """Book Elasticsearch document."""
+    """Property Elasticsearch document."""
 
-    id = fields.IntegerField(attr="id")
-
-    landlord = fields.TextField(
+    id = IntegerField(attr="id")
+    propertyName = TextField()
+    landlord = TextField(
         attr="user_indexing",
-        analyzer=html_strip,
-        fields={
-            "raw": fields.TextField(analyzer="keyword"),
-        },
     )
-
-    propertyName = fields.TextField(
-        analyzer=html_strip,
-        fields={
-            "raw": fields.TextField(analyzer="keyword"),
-        },
+    numberOfBedrooms = IntegerField()
+    numberOfBathrooms = IntegerField()
+    propertyType = TextField()
+    availableFrom = DateField()
+    listingDescription = TextField()
+    isOwnerShipVerified = BooleanField()
+    unit = IntegerField()
+    size = FloatField()
+    monthlyRent = FloatField()
+    securityDeposit = FloatField()
+    created_at = DateField()
+    propertyRules = ObjectField(
+        properties={
+            PROPERTY: TextField(
+                attr="property_indexing",
+            ),
+            PropertyRules.SMOKING: BooleanField(),
+            PropertyRules.PET: BooleanField(),
+            PropertyRules.MUSICAL_INSTRUMENTS: BooleanField(),
+        }
     )
-
-    numberOfBedrooms = fields.IntegerField(
-        analyzer=html_strip,
-        fields={
-            "raw": fields.TextField(analyzer="keyword"),
-        },
-    )
-
-    numberOfBathrooms = fields.IntegerField(
-        analyzer=html_strip,
-        fields={
-            "raw": fields.TextField(analyzer="keyword"),
-        },
-    )
-
-    availableFrom = fields.DateField()
-
-    listingDescription = fields.TextField(
-        analyzer=html_strip,
-        fields={
-            "raw": fields.TextField(analyzer="keyword"),
-        },
-    )
-
-    isOwnerShipVerified = fields.BooleanField(
-        analyzer=html_strip,
-        fields={
-            "raw": fields.TextField(analyzer="keyword"),
-        },
-    )
-
-    unit = fields.IntegerField()
-
-    size = fields.FloatField()
-
-    propertyType = fields.TextField(
-        analyzer=html_strip,
-        fields={
-            "raw": fields.TextField(analyzer="keyword"),
-        },
-    )
-
-    monthlyRent = fields.FloatField()
-
-    securityDeposit = fields.FloatField()
-
-    created_at = fields.DateField()
 
     class Django(object):
-        """Inner nested class Django."""
+        """The Django model associate with this Document"""
 
-        model = Property  # The model associate with this Document
+        model = Property

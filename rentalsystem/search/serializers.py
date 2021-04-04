@@ -1,22 +1,28 @@
 from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
 
+from rentalsystem.common.models import CREATED_AT, PROPERTY, ID
 from rentalsystem.properties.models import Property
+from rentalsystem.search.documents.propertyrules import PropertyRulesDocument
 from rentalsystem.search.documents.property import PropertyDocument
 
 
-class PropertyDocumentSerializer(DocumentSerializer):
-    """Serializer for the Book document."""
+class PropertyRulesDocumentSerializer(DocumentSerializer):
+    """Serializer for the Property document."""
 
     class Meta:
-        """Meta options."""
+        document = PropertyRulesDocument
+        exclude = [ID, PROPERTY]
 
-        # Specify the correspondent document class
+
+class PropertyDocumentSerializer(DocumentSerializer):
+    """Serializer for the Property document."""
+
+    propertyRules = PropertyRulesDocumentSerializer()
+
+    class Meta:
         document = PropertyDocument
-
-        # List the serializer fields. Note, that the order of the fields
-        # is preserved in the ViewSet.
         fields = (
-            Property.ID,
+            ID,
             Property.LANDLORD,
             Property.PROPERTY_NAME,
             Property.NUMBER_OF_BEDROOMS,
@@ -29,4 +35,5 @@ class PropertyDocumentSerializer(DocumentSerializer):
             Property.PROPERTY_TYPE,
             Property.MONTHLY_RENT,
             Property.SECURITY_DEPOSIT,
+            CREATED_AT,
         )

@@ -5,11 +5,11 @@ from django.db.models import (
     DecimalField,
     OneToOneField,
 )
-from rentalsystem.common.models import AbstractBaseModel
+from rentalsystem.common.models import AbstractBaseModel, AbstractPropertyBaseModel
 from rentalsystem.properties.models import Property
 
 
-class PropertyRules(AbstractBaseModel):
+class PropertyRules(AbstractPropertyBaseModel):
     """ Property's Rules Model"""
 
     PROPERTY_RULES = "propertyRules"
@@ -23,7 +23,7 @@ class PropertyRules(AbstractBaseModel):
     musicalInstruments = BooleanField(default=False)
 
 
-class PropertyAmenities(AbstractBaseModel):
+class PropertyAmenities(AbstractPropertyBaseModel):
     """ Property Amenities Model"""
 
     PROPERTY_AMENITIES = "propertyAmenities"

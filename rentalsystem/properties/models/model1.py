@@ -13,7 +13,7 @@ from django.db.models import (
 from django.db.models.fields.files import ImageField
 
 from rentalsystem.accounts.models import User
-from rentalsystem.common.models import AbstractBaseModel
+from rentalsystem.common.models import AbstractBaseModel, AbstractPropertyBaseModel
 from rentalsystem.utils.storages import MediaRootS3Boto3Storage
 
 
@@ -72,15 +72,14 @@ class Property(AbstractBaseModel):
 
     @property
     def user_indexing(self):
-        """Publisher for indexing.
-
+        """
         Used in Elasticsearch indexing.
         """
         if self.landlord is not None:
-            return self.landlord.first_name
+            return self.landlord.id
 
 
-class PropertyAddress(AbstractBaseModel):
+class PropertyAddress(AbstractPropertyBaseModel):
     """ Property's Address Model"""
 
     PROPERTY_ADDRESS = "propertyAddress"
@@ -102,7 +101,7 @@ class PropertyAddress(AbstractBaseModel):
     longitude = DecimalField(default=None, blank=True, max_digits=6, decimal_places=2)
 
 
-class PropertyImage(AbstractBaseModel):
+class PropertyImage(AbstractPropertyBaseModel):
     """ Property Image Model"""
 
     PROPERTY_IMAGE = "propertyImage"
@@ -110,7 +109,7 @@ class PropertyImage(AbstractBaseModel):
     image = ImageField(blank=True, storage=MediaRootS3Boto3Storage())
 
 
-class OwnershipDocument(AbstractBaseModel):
+class OwnershipDocument(AbstractPropertyBaseModel):
     """ Property Document Model"""
 
     property = ForeignKey(Property, related_name="propertyDocument", on_delete=CASCADE)

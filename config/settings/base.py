@@ -298,6 +298,8 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
         # "rentalsystem.common.permission.IsOwner",
     ),
+    "DEFAULT_PAGINATION_CLASS": "rentalsystem.common.paginator.DefaultCustomPaginator",
+    "PAGE_SIZE": 10,
 }
 
 # django-cors-headers - https://github.com/adamchainz/django-cors-headers#setup

@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from typing import List
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 from rest_framework.fields import IntegerField, ListField, ImageField, CharField
 from rest_framework.request import Request
 
 from rentalsystem.accounts.serializers import UserSerializer
+from rentalsystem.common.models import ID, PROPERTY, CREATED_AT, UPDATED_AT
 from rentalsystem.properties.models import (
     Property,
     PropertyAddress,
@@ -19,27 +19,29 @@ from rentalsystem.properties.service import PropertyService
 class PropertyAddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = PropertyAddress
-        exclude = [
-            "property",
-        ]
+        exclude = [PROPERTY, CREATED_AT, UPDATED_AT]
+        read_only_fields = [ID]
 
 
 class PropertyImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = PropertyImage
-        exclude = ["property", "created_at", "updated_at"]
+        exclude = [PROPERTY, CREATED_AT, UPDATED_AT]
+        read_only_fields = [ID]
 
 
 class PropertyRulesSerializer(serializers.ModelSerializer):
     class Meta:
         model = PropertyRules
-        exclude = ["property", "created_at", "updated_at"]
+        exclude = [PROPERTY, CREATED_AT, UPDATED_AT]
+        read_only_fields = [ID]
 
 
 class PropertyAmenitiesSerializer(serializers.ModelSerializer):
     class Meta:
         model = PropertyAmenities
-        exclude = ["property", "created_at", "updated_at"]
+        exclude = [PROPERTY, CREATED_AT, UPDATED_AT]
+        read_only_fields = [ID]
 
 
 COMMON_PROPERTY_FIELDS = [
@@ -86,10 +88,9 @@ class ViewablePropertiesSerializer(PropertyBaseSerializer):
 
     class Meta:
         model = Property
-        new_fields: List = [
+        new_fields = [
             PropertyAmenities.PROPERTY_AMENITIES,
             PropertyRules.PROPERTY_RULES,
-            Property.LANDLORD,
         ]
         fields = PropertyBaseSerializer.Meta.fields + new_fields
 
@@ -124,7 +125,8 @@ class EditablePropertySerializer(WritableNestedModelSerializer):
 class AvailableLocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = AvailableLocation
-        exclude = ["property", "created_at", "updated_at"]
+        exclude = [PROPERTY, CREATED_AT, UPDATED_AT]
+        read_only_fields = [ID]
 
 
 class ImageUploaderSerializer(serializers.Serializer):

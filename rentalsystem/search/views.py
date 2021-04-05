@@ -6,9 +6,9 @@ from django_elasticsearch_dsl_drf.filter_backends import (
     CompoundSearchFilterBackend,
 )
 from django_elasticsearch_dsl_drf.viewsets import BaseDocumentViewSet
-from django_elasticsearch_dsl_drf.pagination import PageNumberPagination
 
 from rentalsystem.common.models import CREATED_AT, ID
+from rentalsystem.common.paginator import CustomPaginator
 from rentalsystem.properties.models import (
     Property,
     PropertyRules,
@@ -25,7 +25,7 @@ class PropertyDocumentView(BaseDocumentViewSet):
 
     document = PropertyDocument
     serializer_class = PropertyDocumentSerializer
-    pagination_class = PageNumberPagination
+    pagination_class = CustomPaginator
     lookup_field = ID
     filter_backends = [
         FilteringFilterBackend,

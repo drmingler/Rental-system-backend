@@ -65,6 +65,7 @@ DJANGO_APPS = [
     "django.forms",
 ]
 THIRD_PARTY_APPS = [
+    "channels",
     "django_celery_beat",
     "rest_framework",
     "corsheaders",
@@ -79,6 +80,7 @@ LOCAL_APPS = [
     "rentalsystem.subscription.apps.SubscriptionConfig",
     "rentalsystem.common.apps.CommonConfig",
     "rentalsystem.search.apps.SearchConfig",
+    "rentalsystem.chat.apps.ChatConfig",
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -319,3 +321,7 @@ ELASTICSEARCH_INDEX_NAMES = {
     "rentalsystem.search.documents.propertyamenities": "propertyamenities",
     "rentalsystem.search.documents.propertyimage": "propertyimage",
 }
+
+
+# Chat app configuration
+ASGI_APPLICATION = "config.asgi.application"

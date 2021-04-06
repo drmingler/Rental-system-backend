@@ -19,7 +19,7 @@ class IsOwner(AbstractBasePermission):
 
 class IsOwnProfile(AbstractBasePermission):
     """
-    Custom permission to only allow owners of an object to edit it.
+    Custom permission to only allow owners of a profile to edit profile.
     """
 
     def has_object_permission(self, request, view, obj) -> bool:

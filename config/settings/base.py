@@ -308,7 +308,6 @@ REST_FRAMEWORK = {
 CORS_URLS_REGEX = r"^/api/.*$"
 # Your stuff...
 # ------------------------------------------------------------------------------
-# Elastic search config
 # Elasticsearch configuration
 ELASTICSEARCH_DSL = {
     "default": {"hosts": "localhost:9200"},
@@ -324,4 +323,13 @@ ELASTICSEARCH_INDEX_NAMES = {
 
 
 # Chat app configuration
-ASGI_APPLICATION = "config.asgi.application"
+ASGI_APPLICATION = "config.asgi.chat_application"
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}

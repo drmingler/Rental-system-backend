@@ -24,6 +24,7 @@ class UserSerializer(serializers.ModelSerializer):
             User.NATIONALITY,
         ]
         read_only_fields = [
+            User.ID,
             User.EMAIL,
             User.USERNAME,
         ]

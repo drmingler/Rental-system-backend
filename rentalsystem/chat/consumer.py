@@ -7,11 +7,16 @@ from rentalsystem.accounts.models import User
 from rentalsystem.chat.models import Chat
 
 
-def save_message(message: str, current_user_id: int, other_user_id: int) -> Chat:
+def save_message(
+    message: str, current_user_id: int, other_user_id: int, room_name: str
+) -> Chat:
     current_user = User.objects.get(id=current_user_id)
     other_user = User.objects.get(id=other_user_id)
     instance = Chat.objects.create(
-        sender=current_user, receiver=other_user, message=message
+        sender=current_user,
+        receiver=other_user,
+        message=message,
+        conversation_code=room_name,
     )
     instance.save()
     return instance
@@ -56,6 +61,7 @@ class ChatConsumer(WebsocketConsumer):
             message=message,
             current_user_id=current_user,
             other_user_id=other_user,
+            room_name=self.room_name,
         )
         return instance
 

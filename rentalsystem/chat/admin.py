@@ -11,6 +11,7 @@ class ChatAdmin(admin.ModelAdmin):
         "sender",
         "receiver",
         "message",
+        "conversation_code",
     ] + common_fields
 
 

@@ -20,6 +20,7 @@ from rentalsystem.properties.serializers import (
     EditablePropertySerializer,
     PropertyBaseSerializer,
     ImageUploaderSerializer,
+    FileUploaderSerializer,
 )
 
 
@@ -58,7 +59,13 @@ class PropertyImageViewSet(CreateModelMixin, DestroyModelMixin, GenericViewSet):
     permission_classes = [IsLandlord]
 
     def create(self, request, *args, **kwargs):
-        serializer = ImageUploaderSerializer(data=request.data)
+        payload = request.data
+        model_name = payload["modelName"]
+        serializer = (
+            ImageUploaderSerializer(data=payload)
+            if model_name == "PropertyImage"
+            else FileUploaderSerializer(data=payload)
+        )
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         return Response(status=status.HTTP_201_CREATED)

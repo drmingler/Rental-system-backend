@@ -1,6 +1,12 @@
 from rest_framework import serializers
 from drf_writable_nested.serializers import WritableNestedModelSerializer
-from rest_framework.fields import IntegerField, ListField, ImageField, CharField
+from rest_framework.fields import (
+    IntegerField,
+    ListField,
+    ImageField,
+    CharField,
+    FileField,
+)
 from rest_framework.request import Request
 
 from rentalsystem.accounts.serializers import UserSerializer
@@ -129,11 +135,19 @@ class AvailableLocationSerializer(serializers.ModelSerializer):
         read_only_fields = [ID]
 
 
-class ImageUploaderSerializer(serializers.Serializer):
+class UploadeBaseSerializer(serializers.Serializer):
     property_service = PropertyService()
     id = IntegerField(min_value=1, required=True)
     modelName = CharField(min_length=2, required=True)
-    image = ListField(child=ImageField(), required=True)
+    image = ListField(child=FileField(), required=True)
 
     def create(self, validated_data):
         return self.property_service.upload_image(validated_data=validated_data)
+
+
+class ImageUploaderSerializer(UploadeBaseSerializer):
+    image = ListField(child=ImageField(), required=True)
+
+
+class FileUploaderSerializer(UploadeBaseSerializer):
+    image = ListField(child=FileField(), required=True)

@@ -9,10 +9,10 @@ from rentalsystem.properties.views import (
 )
 
 router = SimpleRouter()
+router.register("property/create", EditPropertyDetailsViewSet)
 router.register("property/search", SimplePropertySearchViewSet)
-router.register("location", CurrentLocationViewSet, basename="location")
 router.register("property/view", ViewPropertyDetailsViewSet)
-router.register("property/edit", EditPropertyDetailsViewSet)
-router.register("property/upload", PropertyImageViewSet, basename="upload")
+router.register("property-image/upload", PropertyImageViewSet, basename="upload")
+router.register("location", CurrentLocationViewSet, basename="location")
 
 urlpatterns = router.urls

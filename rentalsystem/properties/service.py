@@ -66,13 +66,16 @@ class PropertyService:
 
     def upload_image(self, validated_data: Dict):
         model_name: str = validated_data.pop("modelName")
-        images: List = validated_data.pop("image")
+        media_files: List = validated_data.pop("image", "document")
 
         try:
             property_instance = Property.objects.get(**validated_data)
             instance = self.get_model_instance(model_name=model_name)
-            for image in images:
-                instance.objects.create(image=image, property=property_instance)
+            for file in media_files:
+                if model_name == "PropertyImage":
+                    instance.objects.create(image=file, property=property_instance)
+                else:
+                    instance.objects.create(document=file, property=property_instance)
 
         except Exception:
             raise InvalidPayload()

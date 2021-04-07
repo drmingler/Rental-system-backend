@@ -60,6 +60,8 @@ class PropertyImageViewSet(CreateModelMixin, DestroyModelMixin, GenericViewSet):
 
     def create(self, request, *args, **kwargs):
         payload = request.data
+        user = request.user
+        self.property_service.is_own_property(user, payload)
         model_name = payload["modelName"]
         serializer = (
             ImageUploaderSerializer(data=payload)
@@ -71,6 +73,9 @@ class PropertyImageViewSet(CreateModelMixin, DestroyModelMixin, GenericViewSet):
         return Response(status=status.HTTP_201_CREATED)
 
     def destroy(self, request, *args, **kwargs):
+        payload = request.data
+        user = request.user
+        self.property_service.is_own_property(user, payload)
         pk = kwargs["pk"]
         instance = PropertyImage.objects.get(id=pk)
         self.perform_destroy(instance)

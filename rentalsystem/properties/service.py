@@ -1,4 +1,6 @@
 from typing import Dict, List
+
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.request import Request
 from django.apps import apps
 
@@ -43,6 +45,14 @@ class PropertyService:
             filter(lambda model: model.__name__ == model_name, apps.get_models())
         )
         return instance
+
+    def is_own_property(self, user: User, payload: Dict):
+        property_exist = Property.objects.filter(
+            landlord=user, id=payload["id"]
+        ).exists()
+        if property_exist:
+            return
+        raise PermissionDenied()
 
     def create_property(self, validated_data: Dict, request: Request) -> Property:
         property_amenities: Dict = validated_data.pop(

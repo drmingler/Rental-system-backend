@@ -44,7 +44,7 @@ class ChatConsumer(WebsocketConsumer):
         self.room_name = self.generate_room_name()
         async_to_sync(self.channel_layer.group_add)(self.room_name, self.channel_name)
 
-    def remove_from_group(self):
+    def remove_user_from_group(self):
         async_to_sync(self.channel_layer.group_discard)(
             self.room_name, self.channel_name
         )
@@ -73,7 +73,7 @@ class ChatConsumer(WebsocketConsumer):
         self.accept()
 
     def disconnect(self, close_code):
-        self.remove_from_group()
+        self.remove_user_from_group()
 
     # Receive message from WebSocket
     def receive(self, text_data):

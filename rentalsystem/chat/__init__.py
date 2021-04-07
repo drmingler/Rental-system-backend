@@ -1,1 +1,0 @@
-from rentalsystem.chat.routing import websocket_urlpatterns

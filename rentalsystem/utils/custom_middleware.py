@@ -48,4 +48,5 @@ class TokenAuthMiddleware(BaseMiddleware):
 
             # Add the user to the scope
             scope["user"] = user
+            scope["auth_user_id"] = decoded_data["user_id"]
             return await super().__call__(scope, receive, send)

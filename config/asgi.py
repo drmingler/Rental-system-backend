@@ -16,7 +16,9 @@ from django.core.asgi import get_asgi_application
 
 # This allows easy placement of apps within the interior
 # rentalsystem directory.
-from rentalsystem import chat
+from django.urls import re_path
+
+from rentalsystem.chat.consumer import ChatConsumer
 from rentalsystem.utils.custom_middleware import TokenAuthMiddleware
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -32,7 +34,13 @@ django_application = get_asgi_application()
 chat_application = ProtocolTypeRouter(
     {
         "http": get_asgi_application(),
-        "websocket": TokenAuthMiddleware(URLRouter(chat.routing.websocket_urlpatterns)),
+        "websocket": TokenAuthMiddleware(
+            URLRouter(
+                [
+                    re_path(r"ws/chat/(?P<user_id>\w+)/$", ChatConsumer.as_asgi()),
+                ]
+            )
+        ),
     }
 )
 # from helloworld.asgi import HelloWorldApplication

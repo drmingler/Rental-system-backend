@@ -131,8 +131,7 @@ class EditablePropertySerializer(WritableNestedModelSerializer):
 class AvailableLocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = AvailableLocation
-        exclude = [PROPERTY, CREATED_AT, UPDATED_AT]
-        read_only_fields = [ID]
+        exclude = [ID]
 
 
 class UploadeBaseSerializer(serializers.Serializer):

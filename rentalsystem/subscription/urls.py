@@ -6,7 +6,9 @@ from rentalsystem.subscription.views import (
 )
 
 router = SimpleRouter()
-router.register("transactions", TransactionHistoryViewSet)
+router.register(
+    "transaction-history", TransactionHistoryViewSet, basename="transactions"
+)
 router.register("subscription", SubscriptionViewSet, basename="subscription")
 
 urlpatterns = router.urls

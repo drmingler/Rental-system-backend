@@ -1,6 +1,6 @@
 from rest_framework.response import Response
 from rest_framework import viewsets, status
-from rest_framework.mixins import RetrieveModelMixin
+from rest_framework.mixins import ListModelMixin
 from rest_framework.viewsets import GenericViewSet
 
 from rentalsystem.common.permission import IsOwner
@@ -11,10 +11,12 @@ from rentalsystem.subscription.serializers import (
 )
 
 
-class TransactionHistoryViewSet(RetrieveModelMixin, GenericViewSet):
+class TransactionHistoryViewSet(ListModelMixin, GenericViewSet):
     permission_classes = [IsOwner]
     serializer_class = TransactionHistorySerializer
-    queryset = Subscription.objects.all()
+
+    def get_queryset(self, *args, **kwargs):
+        return Subscription.objects.filter(user=self.request.user)
 
 
 class SubscriptionViewSet(viewsets.ViewSet):

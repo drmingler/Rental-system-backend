@@ -57,7 +57,7 @@ class PropertyDocumentSerializer(DocumentSerializer):
             Property.NUMBER_OF_BATHROOMS,
             Property.LISTING_DESCRIPTION,
             Property.AVAILABLE_FROM,
-            Property.IS_OWNERSHIP_VERIFIED,
+            Property.PROPERTY_STATUS,
             Property.UNIT,
             Property.SIZE,
             Property.PROPERTY_TYPE,

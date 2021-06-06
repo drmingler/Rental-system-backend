@@ -22,11 +22,11 @@ class PropertyAdmin(admin.ModelAdmin):
         "numberOfBathrooms",
         "unit",
         "size",
+        "propertyStatus",
         "listingDescription",
         "availableFrom",
         "monthlyRent",
         "securityDeposit",
-        "isOwnerShipVerified",
     ] + common_fields
 
 

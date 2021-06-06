@@ -35,6 +35,9 @@ from rentalsystem.properties.serializers import (
 ## get low to high price properties
 ## get high to low price properties
 
+# To be added
+# Make listing expired after a month if owner has an expired sub,
+
 
 class PropertyDetailsViewSet(
     CreateModelMixin, DestroyModelMixin, UpdateModelMixin, GenericViewSet

@@ -58,7 +58,7 @@ COMMON_PROPERTY_FIELDS = [
     Property.NUMBER_OF_BATHROOMS,
     Property.LISTING_DESCRIPTION,
     Property.AVAILABLE_FROM,
-    Property.IS_OWNERSHIP_VERIFIED,
+    Property.PROPERTY_STATUS,
     Property.UNIT,
     Property.SIZE,
     Property.PROPERTY_TYPE,
@@ -83,7 +83,7 @@ class PropertyBaseSerializer(serializers.ModelSerializer):
         read_only_fields = [
             Property.ID,
             Property.LANDLORD,
-            Property.IS_OWNERSHIP_VERIFIED,
+            Property.PROPERTY_STATUS,
         ]
 
 
@@ -118,7 +118,7 @@ class EditablePropertySerializer(WritableNestedModelSerializer):
         read_only_fields = [
             Property.ID,
             Property.LANDLORD,
-            Property.IS_OWNERSHIP_VERIFIED,
+            Property.PROPERTY_STATUS,
         ]
 
     def create(self, validated_data):

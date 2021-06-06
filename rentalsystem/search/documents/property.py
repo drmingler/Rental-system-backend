@@ -9,8 +9,6 @@ from django_elasticsearch_dsl import (
     FloatField,
     ObjectField,
     FileField,
-    ListField,
-    Object,
 )
 
 from rentalsystem.common.models import PROPERTY, ID
@@ -41,9 +39,9 @@ class PropertyDocument(Document):
     propertyType = TextField()
     availableFrom = DateField()
     listingDescription = TextField()
-    isOwnerShipVerified = BooleanField()
     unit = IntegerField()
     size = FloatField()
+    propertyStatus = TextField()
     monthlyRent = FloatField()
     securityDeposit = FloatField()
     created_at = DateField()

@@ -70,6 +70,10 @@ class PropertyDocumentView(BaseDocumentViewSet):
             "field": Property.PROPERTY_TYPE,
             "lookups": STRING_LOOKUP,
         },
+        Property.PROPERTY_STATUS: {
+            "field": Property.PROPERTY_STATUS,
+            "lookups": STRING_LOOKUP,
+        },
         Property.MONTHLY_RENT: {
             "field": Property.MONTHLY_RENT,
             "lookups": NUMBER_LOOKUP,
@@ -81,7 +85,6 @@ class PropertyDocumentView(BaseDocumentViewSet):
         Property.PROPERTY_NAME: Property.PROPERTY_NAME,
         Property.AVAILABLE_FROM: Property.AVAILABLE_FROM,
         Property.LISTING_DESCRIPTION: Property.LISTING_DESCRIPTION,
-        Property.IS_OWNERSHIP_VERIFIED: Property.IS_OWNERSHIP_VERIFIED,
         CREATED_AT: CREATED_AT,
         # Access PropertyRules nested fields
         PropertyRules.SMOKING: "propertyRules.smoking",

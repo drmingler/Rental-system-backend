@@ -28,25 +28,37 @@ class Property(AbstractBaseModel):
     NUMBER_OF_BATHROOMS = "numberOfBathrooms"
     LISTING_DESCRIPTION = "listingDescription"
     AVAILABLE_FROM = "availableFrom"
-    IS_OWNERSHIP_VERIFIED = "isOwnerShipVerified"
     UNIT = "unit"
     SIZE = "size"
+    PROPERTY_STATUS = "propertyStatus"
     PROPERTY_TYPE = "propertyType"
     MONTHLY_RENT = "monthlyRent"
     SECURITY_DEPOSIT = "securityDeposit"
 
-    APARTMENT = "apartment"
-    HOUSE = "house"
-    CONDO = "condo"
-    DUPLEX = "duplex"
-    ROOM = "room"
+    APARTMENT = "Apartment"
+    HOUSE = "House"
+    CONDO = "Condo"
+    DUPLEX = "Duplex"
+    ROOM = "Room"
+
+    PENDING = "Pending"
+    VERIFIED = "Verified"
+    REJECTED = "Rejected"
+    EXPIRED = "Expired"
 
     PROPERTY_TYPES = (
-        (APARTMENT, "apartment"),
-        (HOUSE, "house"),
-        (CONDO, "condo"),
-        (DUPLEX, "duplex"),
-        (ROOM, "room"),
+        (APARTMENT, "Apartment"),
+        (HOUSE, "House"),
+        (CONDO, "Condo"),
+        (DUPLEX, "Duplex"),
+        (ROOM, "Room"),
+    )
+
+    LISTING_STATUS = (
+        (PENDING, "Pending"),
+        (VERIFIED, "Verified"),
+        (REJECTED, "Rejected"),
+        (EXPIRED, "Expired"),
     )
 
     class Meta:
@@ -58,11 +70,13 @@ class Property(AbstractBaseModel):
     numberOfBathrooms = IntegerField("Number of bathrooms", default=0)
     listingDescription = TextField("Listing description", blank=True)
     availableFrom = DateField("Available from", max_length=20, blank=True)
-    isOwnerShipVerified = BooleanField("Is ownership verified", default=False)
-    unit = IntegerField(default=0)
-    size = DecimalField(default=0.00, max_digits=6, decimal_places=2)
     propertyType = CharField(
         "Property type", max_length=20, choices=PROPERTY_TYPES, blank=True
+    )
+    unit = IntegerField(default=0)
+    size = DecimalField(default=0.00, max_digits=6, decimal_places=2)
+    propertyStatus = CharField(
+        "Property status", max_length=20, choices=LISTING_STATUS, default=PENDING
     )
     monthlyRent = DecimalField(
         "Monthly rent", default=0.00, max_digits=10, decimal_places=2
@@ -115,14 +129,6 @@ class PropertyImage(AbstractPropertyBaseModel):
 
     property = ForeignKey(Property, related_name="propertyImage", on_delete=CASCADE)
     image = ImageField(blank=True, storage=MediaRootS3Boto3Storage())
-
-    def image_indexing(self):
-        """Tags for indexing.
-
-        Used in Elasticsearch indexing.
-        """
-        if self.image is not None:
-            return [{"id": self.id, "image": self.image.url}]
 
 
 class OwnershipDocument(AbstractPropertyBaseModel):

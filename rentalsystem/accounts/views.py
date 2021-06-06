@@ -2,7 +2,7 @@ from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin
 from rest_framework.viewsets import GenericViewSet
 
 from rentalsystem.accounts.models import User
-from rentalsystem.accounts.serializers import UserSerializer
+from rentalsystem.accounts.serializers import UserSerializer, LandlordSerializer
 from rentalsystem.common.permission import IsOwnProfile
 
 
@@ -15,7 +15,7 @@ class ProfileViewSet(RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
 
 
 class LandlordProfileViewSet(RetrieveModelMixin, GenericViewSet):
-    serializer_class = UserSerializer
+    serializer_class = LandlordSerializer
     queryset = User.objects.all()
 
     def get_queryset(self, *args, **kwargs):

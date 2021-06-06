@@ -1,7 +1,8 @@
 # Create your models here.
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Union
 
+from dateutil.relativedelta import relativedelta
 from django.db.models import (
     CharField,
     OneToOneField,
@@ -41,10 +42,10 @@ class Subscription(AbstractBaseModel):
 
     def expires_on(self) -> Union[datetime, None]:
         if self.subscribedOn and self.planType == self.MONTHLY:
-            return self.subscribedOn + timedelta(30)
+            return self.subscribedOn + relativedelta(months=1)
 
         if self.subscribedOn and self.planType == self.YEARLY:
-            return self.subscribedOn + timedelta(365)
+            return self.subscribedOn + relativedelta(years=1)
 
     def is_subscription_active(self) -> bool:
         expiry_date = self.expires_on()

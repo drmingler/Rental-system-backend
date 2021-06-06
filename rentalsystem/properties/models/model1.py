@@ -2,7 +2,6 @@ from django.db.models import (
     ForeignKey,
     CASCADE,
     CharField,
-    BooleanField,
     TextField,
     DateField,
     DecimalField,

@@ -40,4 +40,4 @@ class User(AbstractUser, AbstractBaseModel):
     nationality = CharField(blank=True, max_length=40)
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["username", "first_name", "last_name"]
+    REQUIRED_FIELDS = ["first_name", "last_name"]

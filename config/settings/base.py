@@ -101,16 +101,6 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 
-DJOSER = {
-    "TOKEN_MODEL": None,
-    "PASSWORD_RESET_CONFIRM_URL": "password-reset/{uid}/{token}",
-    "ACTIVATION_URL": "activate/{uid}/{token}",
-    "LOGOUT_ON_PASSWORD_CHANGE": True,
-    "SERIALIZERS": {
-        "user": "rentalsystem.accounts.serializers.UserSerializer",
-    },
-}
-
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-user-model
 AUTH_USER_MODEL = "accounts.User"
 # https://docs.djangoproject.com/en/dev/ref/settings/#login-redirect-url
@@ -308,6 +298,17 @@ REST_FRAMEWORK = {
 CORS_URLS_REGEX = r"^/api/.*$"
 # Your stuff...
 # ------------------------------------------------------------------------------
+DJOSER = {
+    "TOKEN_MODEL": None,
+    "PASSWORD_RESET_CONFIRM_URL": "password-reset/{uid}/{token}",
+    "ACTIVATION_URL": "activate/{uid}/{token}",
+    "LOGOUT_ON_PASSWORD_CHANGE": True,
+    "SERIALIZERS": {
+        "user_create": "rentalsystem.accounts.serializers.CustomUserCreateSerializer"
+    },
+}
+
+
 # Elasticsearch configuration
 ELASTICSEARCH_DSL = {
     "default": {"hosts": "localhost:9200"},

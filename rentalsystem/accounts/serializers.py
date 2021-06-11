@@ -37,12 +37,35 @@ class UserSerializer(AbstractUserSerializer):
         read_only_fields = READ_ONLY_FIELDS
 
 
+class SimpleUserSerializer(AbstractUserSerializer):
+    class Meta:
+        model = User
+        fields = [
+            User.ID,
+            User.EMAIL,
+            User.USERNAME,
+            User.FIRST_NAME,
+            User.ADDRESS,
+            User.NATIONALITY,
+            User.AVATAR,
+        ]
+
+
 class LandlordSerializer(AbstractUserSerializer):
     numberOfProperties = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = COMMON_PROPERTY_FIELDS + ["numberOfProperties"]
+        fields = [
+            User.ID,
+            User.EMAIL,
+            User.USERNAME,
+            User.FIRST_NAME,
+            User.ADDRESS,
+            User.NATIONALITY,
+            User.AVATAR,
+            "numberOfProperties",
+        ]
         read_only_fields = READ_ONLY_FIELDS
 
     def get_numberOfProperties(self, instance) -> int:

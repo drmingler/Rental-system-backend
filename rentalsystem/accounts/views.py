@@ -2,13 +2,22 @@ from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin
 from rest_framework.viewsets import GenericViewSet
 
 from rentalsystem.accounts.models import User
-from rentalsystem.accounts.serializers import UserSerializer, LandlordSerializer
+from rentalsystem.accounts.serializers import (
+    UserSerializer,
+    LandlordSerializer,
+    SimpleUserSerializer,
+)
 from rentalsystem.common.permission import IsOwnProfile
 
 
-class ProfileViewSet(RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
+class RetrieveProfileViewSet(RetrieveModelMixin, GenericViewSet):
     """Returns a user's profile either a landlord or tenant"""
 
+    serializer_class = SimpleUserSerializer
+    queryset = User.objects.all()
+
+
+class UpdateProfileViewSet(UpdateModelMixin, GenericViewSet):
     permission_classes = [IsOwnProfile]
     serializer_class = UserSerializer
     queryset = User.objects.all()

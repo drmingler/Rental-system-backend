@@ -68,9 +68,10 @@ class PropertyService:
     def upload_image(self, validated_data: Dict):
         model_name: str = validated_data.pop("modelName")
         media_files: List = validated_data.pop("image", "document")
+        property_id: str = validated_data.pop("propertyId")
 
         try:
-            property_instance = Property.objects.get(**validated_data)
+            property_instance = Property.objects.get(id=property_id)
             instance = self.get_model_instance(model_name=model_name)
             for file in media_files:
                 if model_name == "PropertyImage":

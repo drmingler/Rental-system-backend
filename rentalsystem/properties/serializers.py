@@ -136,7 +136,7 @@ class AvailableLocationSerializer(serializers.ModelSerializer):
 
 class UploadeBaseSerializer(serializers.Serializer):
     property_service = PropertyService()
-    id = IntegerField(min_value=1, required=True)
+    propertyId = IntegerField(min_value=1, required=True)
     modelName = CharField(min_length=2, required=True)
     image = ListField(child=FileField(), required=True)
 

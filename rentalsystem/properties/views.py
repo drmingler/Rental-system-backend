@@ -1,6 +1,5 @@
-from rest_framework import viewsets, status
+from rest_framework import status, permissions
 from rest_framework.filters import SearchFilter
-from rest_framework.generics import get_object_or_404
 from rest_framework.mixins import (
     ListModelMixin,
     RetrieveModelMixin,
@@ -58,7 +57,6 @@ class PropertyDetailsViewSet(
 
 
 class PropertyMediaUploadViewSet(CreateModelMixin, DestroyModelMixin, GenericViewSet):
-    property_service = PropertyService()
     permission_classes = [IsLandlord]
 
     def create(self, request, *args, **kwargs):
@@ -93,11 +91,7 @@ class SimplePropertySearchViewSet(ListModelMixin, GenericViewSet):
     search_fields = ["landlord__id", "propertyAddress__stateName"]
 
 
-class CurrentLocationViewSet(viewsets.ViewSet, GenericViewSet):
-    def list(self, request):
-        location_name: str = self.request.query_params.get("location_name")
-        location_object = get_object_or_404(
-            AvailableLocation, stateName=location_name.capitalize()
-        )
-        serializer = AvailableLocationSerializer(location_object)
-        return Response(serializer.data)
+class CurrentLocationViewSet(ListModelMixin, GenericViewSet):
+    permission_classes = [permissions.AllowAny]
+    serializer_class = AvailableLocationSerializer
+    queryset = AvailableLocation.objects.all()

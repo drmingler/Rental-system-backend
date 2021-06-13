@@ -16,6 +16,8 @@ class UserAdmin(admin.ModelAdmin):
         "userType",
         "address",
         "nationality",
+        "bio",
+        "occupation",
     ]
     search_fields = [
         "email",

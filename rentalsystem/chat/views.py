@@ -6,7 +6,7 @@ from rentalsystem.chat.service import ChatService
 
 
 class ConversationViewSet(ListModelMixin, GenericViewSet):
-    """ This view  returns all the  messages from various conversations"""
+    """ This view returns the last message for each conversation"""
 
     chat_service = ChatService()
     serializer_class = ChatSerializer
@@ -19,7 +19,7 @@ class ConversationViewSet(ListModelMixin, GenericViewSet):
 
 
 class LastMessagesViewSet(ListModelMixin, GenericViewSet):
-    """ This view returns the last message for each conversation"""
+    """ This view  returns all the  messages from various conversations"""
 
     chat_service = ChatService()
     serializer_class = ChatSerializer

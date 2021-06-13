@@ -13,7 +13,7 @@ class ChatService:
             Q(sender=user) & Q(receiver_id=user_id)
             | Q(sender_id=user_id) & Q(receiver=user)
         )
-        return conversations
+        return conversations.order_by("created_at")
 
     def get_last_message(self, user: User) -> Chat:
         last_messages = (

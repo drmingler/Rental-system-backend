@@ -20,6 +20,8 @@ COMMON_PROPERTY_FIELDS = [
     User.USER_TYPE,
     User.ADDRESS,
     User.NATIONALITY,
+    User.BIO,
+    User.OCCUPATION,
 ]
 READ_ONLY_FIELDS = [User.ID, User.EMAIL, User.USERNAME]
 

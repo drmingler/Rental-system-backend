@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db.models import CharField, DateTimeField, EmailField, ImageField
+from django.db.models.fields import TextField
 
 from rentalsystem.common.models import AbstractBaseModel
 from rentalsystem.utils.storages import MediaRootS3Boto3Storage
@@ -20,6 +21,8 @@ class User(AbstractUser, AbstractBaseModel):
     GENDER = "gender"
     ADDRESS = "address"
     NATIONALITY = "nationality"
+    BIO = "bio"
+    OCCUPATION = "occupation"
     FEMALE = "FEMALE"
     MALE = "MALE"
     LANDLORD = "LANDLORD"
@@ -38,6 +41,8 @@ class User(AbstractUser, AbstractBaseModel):
     gender = CharField(choices=GENDER_CHOICE, max_length=30, blank=True)
     address = CharField(blank=True, max_length=255)
     nationality = CharField(blank=True, max_length=40)
+    bio = TextField()
+    occupation = CharField(blank=True, max_length=40)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name", "last_name"]

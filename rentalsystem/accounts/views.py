@@ -1,6 +1,7 @@
 from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin
+from rest_framework.views import APIView
 from rest_framework.viewsets import GenericViewSet
-
+from rest_framework.response import Response
 from rentalsystem.accounts.models import User
 from rentalsystem.accounts.serializers import (
     UserSerializer,
@@ -10,8 +11,18 @@ from rentalsystem.accounts.serializers import (
 from rentalsystem.common.permission import IsOwnProfile
 
 
+class Profile(APIView):
+    """Returns a full  user's profile either a landlord or tenant"""
+
+    def get(self, request):
+        user = request.user
+        user_profile = User.objects.get(pk=user.id)
+        serializer = UserSerializer(user_profile)
+        return Response(serializer.data)
+
+
 class RetrieveProfileViewSet(RetrieveModelMixin, GenericViewSet):
-    """Returns a user's profile either a landlord or tenant"""
+    """Returns a simple user's profile either a landlord or tenant"""
 
     serializer_class = SimpleUserSerializer
     queryset = User.objects.all()

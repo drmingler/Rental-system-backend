@@ -5,6 +5,7 @@ from rest_framework import serializers
 
 from rentalsystem.accounts.models import User
 from rentalsystem.accounts.utils import generate_username
+from rentalsystem.common.models import CREATED_AT
 from rentalsystem.properties.models import Property
 
 COMMON_PROPERTY_FIELDS = [
@@ -47,6 +48,7 @@ class SimpleUserSerializer(AbstractUserSerializer):
             User.EMAIL,
             User.USERNAME,
             User.FIRST_NAME,
+            User.LAST_NAME,
             User.ADDRESS,
             User.NATIONALITY,
             User.AVATAR,
@@ -66,6 +68,8 @@ class LandlordSerializer(AbstractUserSerializer):
             User.ADDRESS,
             User.NATIONALITY,
             User.AVATAR,
+            User.BIO,
+            CREATED_AT,
             "numberOfProperties",
         ]
         read_only_fields = READ_ONLY_FIELDS

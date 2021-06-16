@@ -1,7 +1,7 @@
 from rest_framework.mixins import ListModelMixin
 from rest_framework.viewsets import GenericViewSet
 
-from rentalsystem.chat.serializers import ChatSerializer
+from rentalsystem.chat.serializers import ChatSerializer, LastMessageSerializer
 from rentalsystem.chat.service import ChatService
 
 
@@ -22,7 +22,7 @@ class LastMessagesViewSet(ListModelMixin, GenericViewSet):
     """ This view  returns all the  messages from various conversations"""
 
     chat_service = ChatService()
-    serializer_class = ChatSerializer
+    serializer_class = LastMessageSerializer
 
     def get_queryset(self):
         user = self.request.user

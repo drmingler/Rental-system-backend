@@ -9,7 +9,7 @@ from rest_framework.fields import (
 )
 from rest_framework.request import Request
 
-from rentalsystem.accounts.serializers import UserSerializer
+from rentalsystem.accounts.serializers import LandlordSerializer
 from rentalsystem.common.models import ID, PROPERTY, CREATED_AT, UPDATED_AT
 from rentalsystem.properties.models import (
     Property,
@@ -90,7 +90,7 @@ class PropertyBaseSerializer(serializers.ModelSerializer):
 class ViewablePropertiesSerializer(PropertyBaseSerializer):
     propertyAmenities = PropertyAmenitiesSerializer()
     propertyRules = PropertyRulesSerializer()
-    landlord = UserSerializer()
+    landlord = LandlordSerializer()
 
     class Meta:
         model = Property

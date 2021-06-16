@@ -10,7 +10,9 @@ from rentalsystem.properties.views import (
 
 router = SimpleRouter()
 router.register("property", PropertyDetailsViewSet)
-router.register("property-search", SimplePropertySearchViewSet)
+router.register(
+    "property-search", SimplePropertySearchViewSet, basename="landlord-search"
+)
 router.register("property-view", ViewPropertyDetailsViewSet)
 router.register("property-media-upload", PropertyMediaUploadViewSet, basename="upload")
 router.register("location", CurrentLocationViewSet, basename="location")

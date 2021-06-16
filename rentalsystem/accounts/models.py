@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db.models import CharField, DateTimeField, EmailField, ImageField
-from django.db.models.fields import TextField
+from django.db.models.fields import TextField, DateField
 
 from rentalsystem.common.models import AbstractBaseModel
 from rentalsystem.utils.storages import MediaRootS3Boto3Storage
@@ -33,7 +33,7 @@ class User(AbstractUser, AbstractBaseModel):
 
     email = EmailField(max_length=150, unique=True)
     phoneNumber = CharField("Phone number", max_length=20, blank=True)
-    birthDate = DateTimeField("Birth date", max_length=128, blank=True, null=True)
+    birthDate = DateField("Birth date", max_length=128, blank=True, null=True)
     userType = CharField(
         "User type", choices=USER_TYPES, max_length=30, default=TENANT, blank=True
     )
@@ -41,8 +41,13 @@ class User(AbstractUser, AbstractBaseModel):
     gender = CharField(choices=GENDER_CHOICE, max_length=30, blank=True)
     address = CharField(blank=True, max_length=255)
     nationality = CharField(blank=True, max_length=40)
-    bio = TextField()
+    bio = TextField(blank=True)
     occupation = CharField(blank=True, max_length=40)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name", "last_name"]
+
+    def save(self, *args, **kwargs):
+        if "" not in [self.gender, self.nationality, self.address]:
+            self.userType = self.LANDLORD
+        super(User, self).save(*args, **kwargs)

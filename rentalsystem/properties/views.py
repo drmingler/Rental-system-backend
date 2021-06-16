@@ -88,7 +88,7 @@ class SimplePropertySearchViewSet(ListModelMixin, GenericViewSet):
     queryset = property_service.get_properties()
     serializer_class = PropertyBaseSerializer
     filter_backends = [SearchFilter]
-    search_fields = ["landlord__id", "propertyAddress__stateName"]
+    search_fields = ["landlord__id"]
 
 
 class CurrentLocationViewSet(ListModelMixin, GenericViewSet):

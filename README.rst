@@ -1,7 +1,7 @@
 RentalSystemBackend
 ===================
 
-My final year project. This is a rental system built solely for Landlords and Tenants. The Front-end for the system can be found in this repo [Rental System Frontend] (https://github.com/drmingler/Rental-System)
+My final year project. This is a rental system built solely for Landlords and Tenants. The Front-end for the system can be found in this repo https://github.com/drmingler/Rental-System
 
 .. image:: https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg?logo=cookiecutter
      :target: https://github.com/pydanny/cookiecutter-django/
